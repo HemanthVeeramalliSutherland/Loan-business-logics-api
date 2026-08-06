@@ -1,0 +1,1491 @@
+[
+    {
+        "id": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "type": "tab",
+        "createdDate": "2026-08-04T07:36:32.727Z",
+        "label": "loan_business_service",
+        "disabled": false,
+        "info": "",
+        "functionSeq": 0,
+        "generateNext": true,
+        "serviceName": "loan_business_service",
+        "relativeParentPath": ""
+    },
+    {
+        "id": "sd_8ZOAQ7bdSvwhGrwJ",
+        "type": "HttpIn",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "start",
+        "name": "",
+        "path": "/save-draft",
+        "uploadpath": "",
+        "summary": "",
+        "description": "",
+        "method": "post",
+        "sequenceId": "",
+        "consumes": "",
+        "produces": "",
+        "filetype": "path",
+        "acceptFileUpload": false,
+        "useDataModel": false,
+        "dataModelIsArray": false,
+        "erd": "",
+        "erdName": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "responses": [],
+            "params": [],
+            "produces": [],
+            "consumes": []
+        },
+        "inputs": 0,
+        "outputs": 1,
+        "validateRequestUsingSwaggerDocs": false,
+        "category": "HTTP",
+        "x": 180,
+        "y": 360,
+        "wires": [
+            [
+                "sd_m8USgu904vmX5hsI"
+            ]
+        ],
+        "__ssdTypeInputs__": {
+            "uploadpath": {
+                "type": "str",
+                "value": "",
+                "nullable": "true",
+                "nullableValue": "",
+                "constant": false
+            }
+        },
+        "__n_excludedFromValidation__": {},
+        "generateNext": true,
+        "serviceName": "loan_business_service",
+        "functionName": "sd_8ZOAQ7bdSvwhGrwJ"
+    },
+    {
+        "id": "sd_18gFPQjmlB2MGN54",
+        "type": "HttpOut",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "headers": {},
+        "responseBody": {
+            "type": "bh.local",
+            "value": "output",
+            "ssd_typedInputField": true
+        },
+        "httpcode": {
+            "type": "num",
+            "value": 200,
+            "ssd_typedInputField": true
+        },
+        "responseType": "obj",
+        "swaggerResponse": {},
+        "responseMapping": {
+            "status": 200,
+            "obj": "bh.local.output",
+            "send": "bh.local.output"
+        },
+        "dataModelIsArray": false,
+        "inputs": 1,
+        "outputs": 0,
+        "erd": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "headers": [],
+            "produces": [],
+            "responses": []
+        },
+        "cookiesList": {},
+        "switchStates": {
+            "headers": "Map",
+            "cookies": "Map"
+        },
+        "functionName": "sd_18gFPQjmlB2MGN54",
+        "category": "HTTP",
+        "x": 825,
+        "y": 360,
+        "wires": [],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_m8USgu904vmX5hsI",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "PrepareSaveDraftRequest",
+        "script": "// let req = bh.input.body;\n\n// bh.local.applicationId = req.application_id;\n\n// bh.local.requestBody = req;\n// bh.local.requestBody.status = \"Draft\";\n\n\n// const req = bh.input.body;\n\n// // Always save as Draft\n// req.status = \"Draft\";\n\n// // Wrap for CRUD API\n// bh.local.requestBody = {\n//     loan_application: req\n// };\n\nconsole.log(\"===== INPUT BODY =====\");\nconsole.log(JSON.stringify(bh.input.body, null, 2));\n\nconst req = bh.input.body;\n\nreq.status = \"Draft\";\n\nbh.local.requestBody = {\n    loan_application: req\n};\n\nconsole.log(\"===== REQUEST BODY =====\");\nconsole.log(JSON.stringify(bh.local.requestBody, null, 2));",
+        "functionName": "prepareSaveDraftRequest",
+        "category": "Function",
+        "x": 345,
+        "y": 360,
+        "wires": [
+            [
+                "sd_CNKH3aMFT8xOsBjr"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_CNKH3aMFT8xOsBjr",
+        "type": "ServerHttpRequest",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "method": "post",
+        "methodMappingObj": {},
+        "urlMapping": "\"http://localhost:8081/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMappingObj": {
+            "mapVarType": "str",
+            "mapVarValue": "http://localhost:8081/api/dm/loan_db/loan_application/update-by-id"
+        },
+        "ret": "json",
+        "retMappingObj": {},
+        "reqBody": "bh.local.requestBody",
+        "reqBodyObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "requestBody"
+        },
+        "resultMapping": "bh.local.updateResponse",
+        "resultMappingObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "updateResponse"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "headersObj": [
+            {
+                "key": "Content-Type",
+                "defaultValue": "application/json"
+            }
+        ],
+        "headerMappingObj": {},
+        "params": {},
+        "paramsObj": [],
+        "paramMappingObj": {},
+        "useAuthTypeMappingObj": {},
+        "useAuthUsername": "",
+        "useAuthUsernameMappingObj": "",
+        "useAuthPassword": "",
+        "useAuthPasswordMappingObj": "",
+        "useAuthToken": "",
+        "useAuthTokenMappingObj": "",
+        "useQueryString": false,
+        "tls": "",
+        "followRedirect": true,
+        "paytoqs": false,
+        "useAuthentication": false,
+        "rejectUnauthorized": false,
+        "proxy": "",
+        "useProxy": false,
+        "usetls": false,
+        "cookiesMapObj": {},
+        "cookiesList": {},
+        "switchStates": {
+            "cookies": "Map"
+        },
+        "editableListData": {},
+        "timeout": {
+            "type": "num",
+            "value": ""
+        },
+        "functionName": "sd_CNKH3aMFT8xOsBjr",
+        "category": "HTTP",
+        "x": 505,
+        "y": 360,
+        "wires": [
+            [
+                "sd_yfgyIEQfSCseFnYp"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_yfgyIEQfSCseFnYp",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "PrepareResponse",
+        "script": "// bh.local.response = {\n//     success: true,\n//     message: \"Loan saved successfully\",\n//     data: bh.local.updateResponse\n// };\n\nconsole.log(\"===== CRUD RESPONSE =====\");\nconsole.log(JSON.stringify(bh.local.updateResponse, null, 2));\n\nbh.local.output = {\n    success: true,\n    data: bh.local.updateResponse\n};",
+        "functionName": "prepareResponse",
+        "category": "Function",
+        "x": 645,
+        "y": 360,
+        "wires": [
+            [
+                "sd_18gFPQjmlB2MGN54"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_RKHjL8nmnjxyuyBn",
+        "type": "HttpIn",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "start",
+        "name": "",
+        "path": "/submit-loan",
+        "uploadpath": "",
+        "summary": "",
+        "description": "",
+        "method": "post",
+        "sequenceId": "",
+        "consumes": "",
+        "produces": "",
+        "filetype": "path",
+        "acceptFileUpload": false,
+        "useDataModel": false,
+        "dataModelIsArray": false,
+        "erd": "",
+        "erdName": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "responses": [],
+            "params": [],
+            "produces": [],
+            "consumes": []
+        },
+        "inputs": 0,
+        "outputs": 1,
+        "validateRequestUsingSwaggerDocs": false,
+        "category": "HTTP",
+        "x": 180,
+        "y": 520,
+        "wires": [
+            [
+                "sd_kO8gj7QgAnW5sg73"
+            ]
+        ],
+        "__ssdTypeInputs__": {
+            "uploadpath": {
+                "type": "str",
+                "value": "",
+                "nullable": "true",
+                "nullableValue": "",
+                "constant": false
+            }
+        },
+        "__n_excludedFromValidation__": {},
+        "generateNext": true,
+        "serviceName": "loan_business_service",
+        "functionName": "sd_RKHjL8nmnjxyuyBn"
+    },
+    {
+        "id": "sd_YUiD7IkAkwWZTRyM",
+        "type": "HttpOut",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "headers": {},
+        "responseBody": {
+            "type": "bh.local",
+            "value": "output",
+            "ssd_typedInputField": true
+        },
+        "httpcode": {
+            "type": "num",
+            "value": 200,
+            "ssd_typedInputField": true
+        },
+        "responseType": "obj",
+        "swaggerResponse": {},
+        "responseMapping": {
+            "status": 200,
+            "obj": "bh.local.output",
+            "send": "bh.local.output"
+        },
+        "dataModelIsArray": false,
+        "inputs": 1,
+        "outputs": 0,
+        "erd": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "headers": [],
+            "produces": [],
+            "responses": []
+        },
+        "cookiesList": {},
+        "switchStates": {
+            "headers": "Map",
+            "cookies": "Map"
+        },
+        "functionName": "sd_YUiD7IkAkwWZTRyM",
+        "category": "HTTP",
+        "x": 825,
+        "y": 520,
+        "wires": [],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_0EvC0nKvOQkt1i9j",
+        "type": "ServerHttpRequest",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "method": "post",
+        "methodMappingObj": {},
+        "urlMapping": "\"http://localhost:8081/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMappingObj": {
+            "mapVarType": "str",
+            "mapVarValue": "http://localhost:8081/api/dm/loan_db/loan_application/update-by-id"
+        },
+        "ret": "json",
+        "retMappingObj": {},
+        "reqBody": "bh.local.requestBody",
+        "reqBodyObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "requestBody"
+        },
+        "resultMapping": "bh.responce",
+        "resultMappingObj": {
+            "mapVarType": "bh",
+            "mapVarValue": "responce"
+        },
+        "headers": {},
+        "headersObj": [],
+        "headerMappingObj": {},
+        "params": {},
+        "paramsObj": [],
+        "paramMappingObj": {},
+        "useAuthTypeMappingObj": {},
+        "useAuthUsername": "",
+        "useAuthUsernameMappingObj": "",
+        "useAuthPassword": "",
+        "useAuthPasswordMappingObj": "",
+        "useAuthToken": "",
+        "useAuthTokenMappingObj": "",
+        "useQueryString": false,
+        "tls": "",
+        "followRedirect": true,
+        "paytoqs": false,
+        "useAuthentication": false,
+        "rejectUnauthorized": false,
+        "proxy": "",
+        "useProxy": false,
+        "usetls": false,
+        "cookiesMapObj": {},
+        "cookiesList": {},
+        "switchStates": {
+            "cookies": "Map"
+        },
+        "editableListData": {},
+        "timeout": {
+            "type": "num",
+            "value": ""
+        },
+        "functionName": "sd_0EvC0nKvOQkt1i9j",
+        "category": "HTTP",
+        "x": 505,
+        "y": 520,
+        "wires": [
+            [
+                "sd_cmXC2P6KdsmgnkiP"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_kO8gj7QgAnW5sg73",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "script": "console.log(\"Body:\", JSON.stringify(bh.input.body, null, 2));\n\nconst loan = bh.input.body.loan_application || bh.input.body;\n\nif (!loan) {\n    throw new Error(\"Loan object not found in request.\");\n}\n\nloan.status = \"Submitted\";\n\nbh.local.requestBody = {\n    loan_application: loan\n};",
+        "functionName": "sd_kO8gj7QgAnW5sg73",
+        "category": "Function",
+        "x": 325,
+        "y": 520,
+        "wires": [
+            [
+                "sd_0EvC0nKvOQkt1i9j"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_cmXC2P6KdsmgnkiP",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "script": "bh.local.output = {\n    success: true,\n    message: \"Loan submitted successfully.\",\n    data: bh.local.response\n};",
+        "functionName": "sd_cmXC2P6KdsmgnkiP",
+        "category": "Function",
+        "x": 645,
+        "y": 520,
+        "wires": [
+            [
+                "sd_YUiD7IkAkwWZTRyM"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_wSIgWLe5RrehGMFZ",
+        "type": "HttpIn",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "start",
+        "name": "",
+        "path": "/loan-officer-review",
+        "uploadpath": "",
+        "summary": "",
+        "description": "",
+        "method": "post",
+        "sequenceId": "",
+        "consumes": "",
+        "produces": "",
+        "filetype": "path",
+        "acceptFileUpload": false,
+        "useDataModel": false,
+        "dataModelIsArray": false,
+        "erd": "",
+        "erdName": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "responses": [],
+            "params": [],
+            "produces": [],
+            "consumes": []
+        },
+        "inputs": 0,
+        "outputs": 1,
+        "validateRequestUsingSwaggerDocs": false,
+        "category": "HTTP",
+        "x": 200,
+        "y": 760,
+        "wires": [
+            [
+                "sd_RXE1Xyh0zHCIlZeG"
+            ]
+        ],
+        "__ssdTypeInputs__": {
+            "uploadpath": {
+                "type": "str",
+                "value": "",
+                "nullable": "true",
+                "nullableValue": "",
+                "constant": false
+            }
+        },
+        "__n_excludedFromValidation__": {},
+        "generateNext": true,
+        "serviceName": "loan_business_service",
+        "functionName": "sd_wSIgWLe5RrehGMFZ"
+    },
+    {
+        "id": "sd_NAaOmSU1x4ATEywB",
+        "type": "HttpOut",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "headers": {},
+        "responseBody": {
+            "type": "bh.local",
+            "value": "output",
+            "ssd_typedInputField": true
+        },
+        "httpcode": {
+            "type": "num",
+            "value": 200,
+            "ssd_typedInputField": true
+        },
+        "responseType": "obj",
+        "swaggerResponse": {},
+        "responseMapping": {
+            "status": 200,
+            "obj": "bh.local.output",
+            "send": "bh.local.output"
+        },
+        "dataModelIsArray": false,
+        "inputs": 1,
+        "outputs": 0,
+        "erd": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "headers": [],
+            "produces": [],
+            "responses": []
+        },
+        "cookiesList": {},
+        "switchStates": {
+            "headers": "Map",
+            "cookies": "Map"
+        },
+        "functionName": "sd_NAaOmSU1x4ATEywB",
+        "category": "HTTP",
+        "x": 885,
+        "y": 760,
+        "wires": [],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_tA8LJ98dsZsz6rzd",
+        "type": "ServerHttpRequest",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "method": "post",
+        "methodMappingObj": {},
+        "urlMapping": "\"http://localhost:8081/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMappingObj": {
+            "mapVarType": "str",
+            "mapVarValue": "http://localhost:8081/api/dm/loan_db/loan_application/update-by-id"
+        },
+        "ret": "json",
+        "retMappingObj": {},
+        "reqBody": "bh.local.requestBody",
+        "reqBodyObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "requestBody"
+        },
+        "resultMapping": "bh.local.updateResponse",
+        "resultMappingObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "updateResponse"
+        },
+        "headers": {},
+        "headersObj": [],
+        "headerMappingObj": {},
+        "params": {},
+        "paramsObj": [],
+        "paramMappingObj": {},
+        "useAuthTypeMappingObj": {},
+        "useAuthUsername": "",
+        "useAuthUsernameMappingObj": "",
+        "useAuthPassword": "",
+        "useAuthPasswordMappingObj": "",
+        "useAuthToken": "",
+        "useAuthTokenMappingObj": "",
+        "useQueryString": false,
+        "tls": "",
+        "followRedirect": true,
+        "paytoqs": false,
+        "useAuthentication": false,
+        "rejectUnauthorized": false,
+        "proxy": "",
+        "useProxy": false,
+        "usetls": false,
+        "cookiesMapObj": {},
+        "cookiesList": {},
+        "switchStates": {
+            "cookies": "Map"
+        },
+        "editableListData": {},
+        "timeout": {
+            "type": "num",
+            "value": ""
+        },
+        "functionName": "sd_tA8LJ98dsZsz6rzd",
+        "category": "HTTP",
+        "x": 540,
+        "y": 760,
+        "wires": [
+            [
+                "sd_NpoLy9h9LxoomMES"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_RXE1Xyh0zHCIlZeG",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "PrepareLoanOfficerReview Script",
+        "script": "// const loan = bh.input.body.loan_application;\n// console.log(JSON.stringify(bh.input.body, null, 2));\n// loan.decision = bh.input.body.decision;\n// loan.remarks = bh.input.body.remarks;\n\n// if (bh.input.body.decision === \"APPROVE\") {\n//     loan.status = \"Loan Officer Approved\";\n// } else {\n//     loan.status = \"Loan Officer Rejected\";\n// }\n\n// bh.local.requestBody = {\n//     loan_application: loan\n// };\n\nconst loan = bh.input.body.loan_application;\nconsole.log(\"Incoming Body:=================\");\nconsole.log(JSON.stringify(bh.input.body, null, 2));\nconst decision = loan.decision;\nconst remarks = loan.remarks;\n\nif (decision === \"APPROVE\") {\n\n    loan.status = \"Loan Officer Approved\";\n\n} else {\n\n    loan.status = \"Loan Officer Rejected\";\n\n}\n\nloan.remarks = remarks;\nloan.decision = decision;\n\nbh.local.requestBody = {\n    loan_application: loan\n};",
+        "functionName": "prepareLoanOfficerReviewScript",
+        "category": "Function",
+        "x": 345,
+        "y": 760,
+        "wires": [
+            [
+                "sd_tA8LJ98dsZsz6rzd"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_NpoLy9h9LxoomMES",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "script": "bh.local.output = {\n\n    success: true,\n\n    message: \"Loan Officer Review completed successfully.\",\n\n    data: bh.local.updateResponse\n\n};",
+        "functionName": "sd_NpoLy9h9LxoomMES",
+        "category": "Function",
+        "x": 720,
+        "y": 760,
+        "wires": [
+            [
+                "sd_NAaOmSU1x4ATEywB"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_8iFBUZ42AVy9Fc5p",
+        "type": "HttpIn",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "start",
+        "name": "",
+        "path": "/credit-manager-approval",
+        "uploadpath": "",
+        "summary": "",
+        "description": "",
+        "method": "post",
+        "sequenceId": "",
+        "consumes": "",
+        "produces": "",
+        "filetype": "path",
+        "acceptFileUpload": false,
+        "useDataModel": false,
+        "dataModelIsArray": false,
+        "erd": "",
+        "erdName": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "responses": [],
+            "params": [],
+            "produces": [],
+            "consumes": []
+        },
+        "inputs": 0,
+        "outputs": 1,
+        "validateRequestUsingSwaggerDocs": false,
+        "category": "HTTP",
+        "x": 160,
+        "y": 960,
+        "wires": [
+            [
+                "sd_vA2jw72BfcZOk0Vn"
+            ]
+        ],
+        "__ssdTypeInputs__": {
+            "uploadpath": {
+                "type": "str",
+                "value": "",
+                "nullable": "true",
+                "nullableValue": "",
+                "constant": false
+            }
+        },
+        "__n_excludedFromValidation__": {},
+        "generateNext": true,
+        "serviceName": "loan_business_service",
+        "functionName": "sd_8iFBUZ42AVy9Fc5p"
+    },
+    {
+        "id": "sd_mIpppInPocfBN01G",
+        "type": "HttpOut",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "headers": {},
+        "responseBody": {
+            "type": "bh.local",
+            "value": "output",
+            "ssd_typedInputField": true
+        },
+        "httpcode": {
+            "type": "num",
+            "value": 200,
+            "ssd_typedInputField": true
+        },
+        "responseType": "obj",
+        "swaggerResponse": {},
+        "responseMapping": {
+            "status": 200,
+            "obj": "bh.local.output",
+            "send": "bh.local.output"
+        },
+        "dataModelIsArray": false,
+        "inputs": 1,
+        "outputs": 0,
+        "erd": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "headers": [],
+            "produces": [],
+            "responses": []
+        },
+        "cookiesList": {},
+        "switchStates": {
+            "headers": "Map",
+            "cookies": "Map"
+        },
+        "functionName": "sd_mIpppInPocfBN01G",
+        "category": "HTTP",
+        "x": 880,
+        "y": 960,
+        "wires": [],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_vA2jw72BfcZOk0Vn",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "script": "const loan = bh.input.body.loan_application;\n\n// Business Rule:\n// Loan amount can be changed only when credit score < 80\n\nif (loan.credit_score < 80) {\n\n    console.log(\"Loan Amount can be modified.\");\n\n} else {\n\n    console.log(\"Loan Amount cannot be modified.\");\n\n}\n\n// Approval Decision\n\nif (loan.decision === \"APPROVE\") {\n\n    loan.status = \"Credit Manager Approved\";\n\n} else {\n\n    loan.status = \"Credit Manager Rejected\";\n\n}\n\nbh.local.requestBody = {\n    loan_application: loan\n};",
+        "functionName": "sd_vA2jw72BfcZOk0Vn",
+        "category": "Function",
+        "x": 325,
+        "y": 960,
+        "wires": [
+            [
+                "sd_XwdL8LsH4sMkXtVH"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_Rmgi7OEqU1u7CR30",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "script": "bh.local.output = {\n\n    success: true,\n\n    message: \"Credit Manager Approval completed successfully.\",\n\n    data: bh.local.updateResponse\n\n};",
+        "functionName": "sd_Rmgi7OEqU1u7CR30",
+        "category": "Function",
+        "x": 725,
+        "y": 960,
+        "wires": [
+            [
+                "sd_mIpppInPocfBN01G"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_XwdL8LsH4sMkXtVH",
+        "type": "ServerHttpRequest",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "method": "post",
+        "methodMappingObj": {},
+        "urlMapping": "\"http://localhost:8081/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMappingObj": {
+            "mapVarType": "str",
+            "mapVarValue": "http://localhost:8081/api/dm/loan_db/loan_application/update-by-id"
+        },
+        "ret": "json",
+        "retMappingObj": {},
+        "reqBody": "bh.local.requestBody",
+        "reqBodyObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "requestBody"
+        },
+        "resultMapping": "bh.local.updateResponse",
+        "resultMappingObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "updateResponse"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "headersObj": [
+            {
+                "key": "Content-Type",
+                "defaultValue": "application/json"
+            }
+        ],
+        "headerMappingObj": {},
+        "params": {},
+        "paramsObj": [],
+        "paramMappingObj": {},
+        "useAuthTypeMappingObj": {},
+        "useAuthUsername": "",
+        "useAuthUsernameMappingObj": "",
+        "useAuthPassword": "",
+        "useAuthPasswordMappingObj": "",
+        "useAuthToken": "",
+        "useAuthTokenMappingObj": "",
+        "useQueryString": false,
+        "tls": "",
+        "followRedirect": true,
+        "paytoqs": false,
+        "useAuthentication": false,
+        "rejectUnauthorized": false,
+        "proxy": "",
+        "useProxy": false,
+        "usetls": false,
+        "cookiesMapObj": {},
+        "cookiesList": {},
+        "switchStates": {
+            "cookies": "Map"
+        },
+        "editableListData": {},
+        "timeout": {
+            "type": "num",
+            "value": ""
+        },
+        "functionName": "sd_XwdL8LsH4sMkXtVH",
+        "category": "HTTP",
+        "x": 545,
+        "y": 960,
+        "wires": [
+            [
+                "sd_Rmgi7OEqU1u7CR30"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_ygYpv6yX1aEqt05k",
+        "type": "HttpIn",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "start",
+        "name": "generate-loan-account",
+        "path": "/generate-loan-account",
+        "uploadpath": "",
+        "summary": "",
+        "description": "",
+        "method": "post",
+        "sequenceId": "",
+        "consumes": "",
+        "produces": "",
+        "filetype": "path",
+        "acceptFileUpload": false,
+        "useDataModel": false,
+        "dataModelIsArray": false,
+        "erd": "",
+        "erdName": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "responses": [],
+            "params": [],
+            "produces": [],
+            "consumes": []
+        },
+        "inputs": 0,
+        "outputs": 1,
+        "validateRequestUsingSwaggerDocs": false,
+        "category": "HTTP",
+        "x": 180,
+        "y": 1220,
+        "wires": [
+            [
+                "sd_3WxhGiR8VvuVFHuc"
+            ]
+        ],
+        "__ssdTypeInputs__": {
+            "uploadpath": {
+                "type": "str",
+                "value": "",
+                "nullable": "true",
+                "nullableValue": "",
+                "constant": false
+            }
+        },
+        "__n_excludedFromValidation__": {},
+        "generateNext": true,
+        "serviceName": "loan_business_service",
+        "functionName": "sd_ygYpv6yX1aEqt05k"
+    },
+    {
+        "id": "sd_4qgEW6arJBBwQp65",
+        "type": "HttpOut",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "headers": {},
+        "responseBody": {
+            "type": "bh.local",
+            "value": "output",
+            "ssd_typedInputField": true
+        },
+        "httpcode": {
+            "type": "num",
+            "value": 200,
+            "ssd_typedInputField": true
+        },
+        "responseType": "obj",
+        "swaggerResponse": {},
+        "responseMapping": {
+            "status": 200,
+            "obj": "bh.local.output",
+            "send": "bh.local.output"
+        },
+        "dataModelIsArray": false,
+        "inputs": 1,
+        "outputs": 0,
+        "erd": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "headers": [],
+            "produces": [],
+            "responses": []
+        },
+        "cookiesList": {},
+        "switchStates": {
+            "headers": "Map",
+            "cookies": "Map"
+        },
+        "functionName": "sd_4qgEW6arJBBwQp65",
+        "category": "HTTP",
+        "x": 825,
+        "y": 1220,
+        "wires": [],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_3WxhGiR8VvuVFHuc",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "script": "console.log(\"===== Generate Loan Account =====\");\n\nconst loan = bh.input.body.loan_application;\n\nconsole.log(\"Incoming Loan:\");\nconsole.log(JSON.stringify(loan, null, 2));\n\nbh.local.loan = loan;\n\nif (loan.decision === \"APPROVE\") {\n\n    console.log(\"Loan Approved.\");\n\n    const accountNumber =\n        \"LN\" +\n        new Date().getFullYear() +\n        Math.floor(100000 + Math.random() * 900000);\n\n    loan.loan_account_number = accountNumber;\n    loan.status = \"Disbursed\";\n    loan.remarks = \"Loan Account Generated\";\n\n    bh.local.requestBody = {\n        loan_application: loan\n    };\n\n    bh.local.route = \"APPROVE\";\n\n} else {\n\n    console.log(\"Loan Rejected.\");\n\n    bh.local.route = \"REJECT\";\n}",
+        "functionName": "sd_3WxhGiR8VvuVFHuc",
+        "category": "Function",
+        "x": 345,
+        "y": 1220,
+        "wires": [
+            [
+                "sd_PCLoVn1tIEi6NDCh"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_ZmaXtBvYMpkwza1S",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "script": "console.log(\"Database Updated Successfully\");\n\nbh.local.output = {\n\n    success: true,\n\n    message: \"Loan Account generated successfully.\",\n\n    loanAccountNumber:\n        bh.local.requestBody.loan_application.loan_account_number,\n\n    data: bh.input\n};",
+        "functionName": "sd_ZmaXtBvYMpkwza1S",
+        "category": "Function",
+        "x": 705,
+        "y": 1220,
+        "wires": [
+            [
+                "sd_4qgEW6arJBBwQp65"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_6yPFixfNJW8MI6Iu",
+        "type": "ServerHttpRequest",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "method": "post",
+        "methodMappingObj": {},
+        "urlMapping": "\"http://localhost:8081/api/dm/loan_db/loan_application/update-by-id \"",
+        "urlMappingObj": {
+            "mapVarType": "str",
+            "mapVarValue": "http://localhost:8081/api/dm/loan_db/loan_application/update-by-id "
+        },
+        "ret": "json",
+        "retMappingObj": {},
+        "reqBody": "bh.local.requestBody",
+        "reqBodyObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "requestBody"
+        },
+        "resultMapping": "bh.local.updateResponse",
+        "resultMappingObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "updateResponse"
+        },
+        "headers": {},
+        "headersObj": [],
+        "headerMappingObj": {},
+        "params": {},
+        "paramsObj": [],
+        "paramMappingObj": {},
+        "useAuthTypeMappingObj": {},
+        "useAuthUsername": "",
+        "useAuthUsernameMappingObj": "",
+        "useAuthPassword": "",
+        "useAuthPasswordMappingObj": "",
+        "useAuthToken": "",
+        "useAuthTokenMappingObj": "",
+        "useQueryString": false,
+        "tls": "",
+        "followRedirect": true,
+        "paytoqs": false,
+        "useAuthentication": false,
+        "rejectUnauthorized": false,
+        "proxy": "",
+        "useProxy": false,
+        "usetls": false,
+        "cookiesMapObj": {},
+        "cookiesList": {},
+        "switchStates": {
+            "cookies": "Map"
+        },
+        "editableListData": {},
+        "timeout": {
+            "type": "num",
+            "value": ""
+        },
+        "functionName": "sd_6yPFixfNJW8MI6Iu",
+        "category": "HTTP",
+        "x": 585,
+        "y": 1220,
+        "wires": [
+            [
+                "sd_ZmaXtBvYMpkwza1S"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_dj8l0WegIfyM59kv",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "RejectResponse",
+        "script": "console.log(\"Loan rejected. Account generation skipped.\");\n\nbh.local.output = {\n\n    success: false,\n\n    message: \"Loan Account cannot be generated because the loan was rejected.\",\n\n    decision: bh.local.loan.decision,\n\n    status: bh.local.loan.status\n};",
+        "functionName": "rejectResponse",
+        "category": "Function",
+        "x": 665,
+        "y": 1360,
+        "wires": [
+            [
+                "sd_zlmMi463NBrWlfLu"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_zlmMi463NBrWlfLu",
+        "type": "HttpOut",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "headers": {},
+        "responseBody": {
+            "type": "bh.local",
+            "value": "output",
+            "ssd_typedInputField": true
+        },
+        "httpcode": {
+            "type": "num",
+            "value": 400,
+            "ssd_typedInputField": true
+        },
+        "responseType": "obj",
+        "swaggerResponse": {},
+        "responseMapping": {
+            "status": 400,
+            "obj": "bh.local.output",
+            "send": "bh.local.output"
+        },
+        "dataModelIsArray": false,
+        "inputs": 1,
+        "outputs": 0,
+        "erd": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "headers": [],
+            "produces": [],
+            "responses": []
+        },
+        "cookiesList": {},
+        "switchStates": {
+            "headers": "Map",
+            "cookies": "Map"
+        },
+        "functionName": "sd_zlmMi463NBrWlfLu",
+        "category": "HTTP",
+        "x": 825,
+        "y": 1360,
+        "wires": [],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_PCLoVn1tIEi6NDCh",
+        "type": "Switch",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "property": "route",
+        "propertyType": "bh.local",
+        "propertyGv": "bh.local.route",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "APPROVE",
+                "vt": "str",
+                "gv": "\"APPROVE\""
+            },
+            {
+                "t": "eq",
+                "v": "REJECT",
+                "vt": "str",
+                "gv": "\"REJECT\""
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "functionName": "sd_PCLoVn1tIEi6NDCh",
+        "category": "Function",
+        "x": 465,
+        "y": 1220,
+        "wires": [
+            [
+                "sd_6yPFixfNJW8MI6Iu"
+            ],
+            [
+                "sd_dj8l0WegIfyM59kv"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_xSpvvaBwAPBN8Jeb",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "script": "console.log(\"===== Recalculate Loan =====\");\n\nconst loan = bh.input.body.loan_application;\n\n// Validation\n\nif (loan.credit_score >= 80) {\n\n    throw new Error(\n        \"Loan Amount cannot be modified because Credit Score is greater than or equal to 80.\"\n    );\n\n}\n\n// EMI Calculation\n\nconst P = Number(loan.loan_amount);\n\nconst annualRate = Number(loan.interest_rate);\n\nconst r = annualRate / 12 / 100;\n\nconst n = Number(loan.loan_tenure);\n\nconst emi =\n    (P * r * Math.pow(1 + r, n)) /\n    (Math.pow(1 + r, n) - 1);\n\nloan.emi = Number(emi.toFixed(2));\n\nloan.remarks = \"Loan Amount Updated by Credit Manager\";\n\nbh.local.requestBody = {\n    loan_application: loan\n};\n\nconsole.log(JSON.stringify(bh.local.requestBody,null,2));",
+        "functionName": "sd_xSpvvaBwAPBN8Jeb",
+        "category": "Function",
+        "x": 385,
+        "y": 1640,
+        "wires": [
+            [
+                "sd_1ER5kmN8TM2F0hHF"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_sR9uqcJQDBQQB55Y",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "script": "bh.local.output = {\n\n    success: true,\n\n    message: \"Loan Amount and EMI updated successfully.\",\n\n    data: bh.local.updateResponse\n\n};",
+        "functionName": "sd_sR9uqcJQDBQQB55Y",
+        "category": "Function",
+        "x": 705,
+        "y": 1640,
+        "wires": [
+            [
+                "sd_icnEAy2REAvtjTJl"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_Zxm07vCKpFD8r87q",
+        "type": "HttpIn",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "start",
+        "name": "recalculate-loan",
+        "path": "/recalculate-loan",
+        "uploadpath": "",
+        "summary": "",
+        "description": "",
+        "method": "post",
+        "sequenceId": "",
+        "consumes": "",
+        "produces": "",
+        "filetype": "path",
+        "acceptFileUpload": false,
+        "useDataModel": false,
+        "dataModelIsArray": false,
+        "erd": "",
+        "erdName": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "responses": [],
+            "params": [],
+            "produces": [],
+            "consumes": []
+        },
+        "inputs": 0,
+        "outputs": 1,
+        "validateRequestUsingSwaggerDocs": false,
+        "category": "HTTP",
+        "x": 205,
+        "y": 1640,
+        "wires": [
+            [
+                "sd_xSpvvaBwAPBN8Jeb"
+            ]
+        ],
+        "__ssdTypeInputs__": {
+            "uploadpath": {
+                "type": "str",
+                "value": "",
+                "nullable": "true",
+                "nullableValue": "",
+                "constant": false
+            }
+        },
+        "__n_excludedFromValidation__": {},
+        "generateNext": true,
+        "serviceName": "loan_business_service",
+        "functionName": "sd_Zxm07vCKpFD8r87q"
+    },
+    {
+        "id": "sd_icnEAy2REAvtjTJl",
+        "type": "HttpOut",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "headers": {},
+        "responseBody": {
+            "type": "bh.local",
+            "value": "output",
+            "ssd_typedInputField": true
+        },
+        "httpcode": {
+            "type": "num",
+            "value": 200,
+            "ssd_typedInputField": true
+        },
+        "responseType": "obj",
+        "swaggerResponse": {},
+        "responseMapping": {
+            "status": 200,
+            "obj": "bh.local.output",
+            "send": "bh.local.output"
+        },
+        "dataModelIsArray": false,
+        "inputs": 1,
+        "outputs": 0,
+        "erd": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "headers": [],
+            "produces": [],
+            "responses": []
+        },
+        "cookiesList": {},
+        "switchStates": {
+            "headers": "Map",
+            "cookies": "Map"
+        },
+        "functionName": "sd_icnEAy2REAvtjTJl",
+        "category": "HTTP",
+        "x": 885,
+        "y": 1640,
+        "wires": [],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_1ER5kmN8TM2F0hHF",
+        "type": "ServerHttpRequest",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "method": "post",
+        "methodMappingObj": {},
+        "urlMapping": "\"http://localhost:8081/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMappingObj": {
+            "mapVarType": "str",
+            "mapVarValue": "http://localhost:8081/api/dm/loan_db/loan_application/update-by-id"
+        },
+        "ret": "json",
+        "retMappingObj": {},
+        "reqBody": "bh.local.requestBody",
+        "reqBodyObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "requestBody"
+        },
+        "resultMapping": "bh.local.updateResponse",
+        "resultMappingObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "updateResponse"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "headersObj": [
+            {
+                "key": "Content-Type",
+                "defaultValue": "application/json"
+            }
+        ],
+        "headerMappingObj": {},
+        "params": {},
+        "paramsObj": [],
+        "paramMappingObj": {},
+        "useAuthTypeMappingObj": {},
+        "useAuthUsername": "",
+        "useAuthUsernameMappingObj": "",
+        "useAuthPassword": "",
+        "useAuthPasswordMappingObj": "",
+        "useAuthToken": "",
+        "useAuthTokenMappingObj": "",
+        "useQueryString": false,
+        "tls": "",
+        "followRedirect": true,
+        "paytoqs": false,
+        "useAuthentication": false,
+        "rejectUnauthorized": false,
+        "proxy": "",
+        "useProxy": false,
+        "usetls": false,
+        "cookiesMapObj": {},
+        "cookiesList": {},
+        "switchStates": {
+            "cookies": "Map"
+        },
+        "editableListData": {},
+        "timeout": {
+            "type": "num",
+            "value": ""
+        },
+        "functionName": "sd_1ER5kmN8TM2F0hHF",
+        "category": "HTTP",
+        "x": 545,
+        "y": 1640,
+        "wires": [
+            [
+                "sd_sR9uqcJQDBQQB55Y"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    }
+]

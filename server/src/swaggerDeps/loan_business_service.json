@@ -1,0 +1,80 @@
+{
+    "/save-draft": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "loan_business_service"
+            ]
+        }
+    },
+    "/submit-loan": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "loan_business_service"
+            ]
+        }
+    },
+    "/loan-officer-review": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "loan_business_service"
+            ]
+        }
+    },
+    "/credit-manager-approval": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "loan_business_service"
+            ]
+        }
+    },
+    "/generate-loan-account": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "loan_business_service"
+            ]
+        }
+    },
+    "/recalculate-loan": {
+        "post": {
+            "summary": "",
+            "description": "",
+            "consumes": [],
+            "produces": [],
+            "parameters": [],
+            "responses": {},
+            "tags": [
+                "loan_business_service"
+            ]
+        }
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "displayName": "API-Alpha",
+    "appName": "api-alpha",
+    "description": "API-Alpha microservice",
+    "lastModified": "2026-08-03T16:54:40.631Z",
+    "imgSourcePath": "appIcon-1785776078135.webp",
+    "version": "1.0.0",
+    "appType": "apiOnly",
+    "templateName": "blank",
+    "createDate": "2026-08-03T16:54:38.095Z",
+    "analyticsId": "ef5b445a-b056-19f9-f726-d19d15d3571e",
+    "createdStudioVersion": "9.3.0"
+}
