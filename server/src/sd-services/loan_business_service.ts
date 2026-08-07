@@ -334,7 +334,7 @@ export class loan_business_service {
   async sd_CNKH3aMFT8xOsBjr(bh, parentSpanInst) {
     try {
       let requestOptions: any = {
-        url: 'http://localhost:8081/api/dm/loan_db/loan_application/update-by-id',
+        url: 'https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id',
         timeout: 30000,
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
@@ -465,7 +465,7 @@ export class loan_business_service {
   async sd_0EvC0nKvOQkt1i9j(bh, parentSpanInst) {
     try {
       let requestOptions: any = {
-        url: 'http://localhost:8081/api/dm/loan_db/loan_application/update-by-id',
+        url: 'https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id',
         timeout: 30000,
         method: 'post',
         headers: {},
@@ -608,7 +608,7 @@ export class loan_business_service {
   async sd_tA8LJ98dsZsz6rzd(bh, parentSpanInst) {
     try {
       let requestOptions: any = {
-        url: 'http://localhost:8081/api/dm/loan_db/loan_application/update-by-id',
+        url: 'https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id',
         timeout: 30000,
         method: 'post',
         headers: {},
@@ -742,7 +742,7 @@ export class loan_business_service {
   async sd_XwdL8LsH4sMkXtVH(bh, parentSpanInst) {
     try {
       let requestOptions: any = {
-        url: 'http://localhost:8081/api/dm/loan_db/loan_application/update-by-id',
+        url: 'https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id',
         timeout: 30000,
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
@@ -924,7 +924,7 @@ export class loan_business_service {
   async sd_6yPFixfNJW8MI6Iu(bh, parentSpanInst) {
     try {
       let requestOptions: any = {
-        url: 'http://localhost:8081/api/dm/loan_db/loan_application/update-by-id ',
+        url: 'https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id',
         timeout: 30000,
         method: 'post',
         headers: {},
@@ -1117,7 +1117,7 @@ export class loan_business_service {
   async sd_1ER5kmN8TM2F0hHF(bh, parentSpanInst) {
     try {
       let requestOptions: any = {
-        url: 'http://localhost:8081/api/dm/loan_db/loan_application/update-by-id',
+        url: 'https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id',
         timeout: 30000,
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
