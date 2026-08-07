@@ -150,10 +150,10 @@
         "name": "",
         "method": "post",
         "methodMappingObj": {},
-        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
             "mapVarType": "str",
-            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id"
+            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
         "retMappingObj": {},
@@ -360,10 +360,10 @@
         "name": "",
         "method": "post",
         "methodMappingObj": {},
-        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
             "mapVarType": "str",
-            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id"
+            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
         "retMappingObj": {},
@@ -585,10 +585,10 @@
         "name": "",
         "method": "post",
         "methodMappingObj": {},
-        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
             "mapVarType": "str",
-            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id"
+            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
         "retMappingObj": {},
@@ -854,10 +854,10 @@
         "name": "",
         "method": "post",
         "methodMappingObj": {},
-        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
             "mapVarType": "str",
-            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id"
+            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
         "retMappingObj": {},
@@ -1086,10 +1086,10 @@
         "name": "",
         "method": "post",
         "methodMappingObj": {},
-        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
             "mapVarType": "str",
-            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id"
+            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
         "retMappingObj": {},
@@ -1430,10 +1430,10 @@
         "name": "",
         "method": "post",
         "methodMappingObj": {},
-        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id\"",
+        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
             "mapVarType": "str",
-            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/api/dm/loan_db/loan_application/update-by-id"
+            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
         "retMappingObj": {},
