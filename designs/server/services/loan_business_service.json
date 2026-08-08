@@ -45,8 +45,8 @@
         "outputs": 1,
         "validateRequestUsingSwaggerDocs": false,
         "category": "HTTP",
-        "x": 180,
-        "y": 360,
+        "x": 225,
+        "y": 300,
         "wires": [
             [
                 "sd_m8USgu904vmX5hsI"
@@ -111,8 +111,8 @@
         },
         "functionName": "sd_18gFPQjmlB2MGN54",
         "category": "HTTP",
-        "x": 825,
-        "y": 360,
+        "x": 1165,
+        "y": 320,
         "wires": [],
         "__n_excludedFromValidation__": {},
         "generateNext": false,
@@ -126,14 +126,14 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "PrepareSaveDraftRequest",
-        "script": "// let req = bh.input.body;\n\n// bh.local.applicationId = req.application_id;\n\n// bh.local.requestBody = req;\n// bh.local.requestBody.status = \"Draft\";\n\n\n// const req = bh.input.body;\n\n// // Always save as Draft\n// req.status = \"Draft\";\n\n// // Wrap for CRUD API\n// bh.local.requestBody = {\n//     loan_application: req\n// };\n\nconsole.log(\"===== INPUT BODY =====\");\nconsole.log(JSON.stringify(bh.input.body, null, 2));\n\nconst req = bh.input.body;\n\nreq.status = \"Draft\";\n\nbh.local.requestBody = {\n    loan_application: req\n};\n\nconsole.log(\"===== REQUEST BODY =====\");\nconsole.log(JSON.stringify(bh.local.requestBody, null, 2));",
+        "script": "// let req = bh.input.body;\n\n// bh.local.applicationId = req.application_id;\n\n// bh.local.requestBody = req;\n// bh.local.requestBody.status = \"Draft\";\n\n\n// const req = bh.input.body;\n\n// // Always save as Draft\n// req.status = \"Draft\";\n\n// // Wrap for CRUD API\n// bh.local.requestBody = {\n//     loan_application: req\n// };\n\n// console.log(\"===== INPUT BODY =====\");\n// console.log(JSON.stringify(bh.input.body, null, 2));\n\n// const req = bh.input.body;\n\n// req.status = \"Draft\";\n\n// bh.local.requestBody = {\n//     loan_application: req\n// };\n\n// console.log(\"===== REQUEST BODY =====\");\n// console.log(JSON.stringify(bh.local.requestBody, null, 2));\n// console.log(\"===== SAVE DRAFT INPUT =====\");\n// console.log(JSON.stringify(bh.input.body, null, 2));\n\n// const body = bh.input.body || {};\n\n// const loan = body.loan_application || body;\n\n// // Check whether this is an existing draft\n// bh.local.isExistingDraft = !!loan.application_id;\n\n// // Keep the incoming loan data\n// bh.local.loanApplication = {\n//     ...loan,\n//     status: \"DRAFT\"\n// };\n\n// console.log(\"Existing Draft:\", bh.local.isExistingDraft);\n// console.log(\"Loan Application:\");\n// console.log(JSON.stringify(bh.local.loanApplication, null, 2));\nconsole.log(\"===== SAVE DRAFT INPUT =====\");\n\nconst body = bh.input.body || {};\n\nconsole.log(JSON.stringify(body, null, 2));\n\nconst loan = body.loan_application || body;\n\n// Store the loan application\nbh.local.loanApplication = {\n    ...loan,\n    status: \"DRAFT\"\n};\n\n// Check application_id\nif (loan.application_id) {\n    bh.local.isExistingDraft = \"true\";\n} else {\n    bh.local.isExistingDraft = \"false\";\n}\n\nconsole.log(\n    \"isExistingDraft:\",\n    bh.local.isExistingDraft\n);\n\nconsole.log(\n    \"loanApplication:\",\n    JSON.stringify(bh.local.loanApplication, null, 2)\n);",
         "functionName": "prepareSaveDraftRequest",
         "category": "Function",
-        "x": 345,
-        "y": 360,
+        "x": 390,
+        "y": 300,
         "wires": [
             [
-                "sd_CNKH3aMFT8xOsBjr"
+                "sd_kuu9RgLV0lbtFJwa"
             ]
         ],
         "__n_excludedFromValidation__": {},
@@ -143,6 +143,214 @@
     },
     {
         "id": "sd_CNKH3aMFT8xOsBjr",
+        "type": "ServerHttpRequest",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "method": "post",
+        "methodMappingObj": {},
+        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
+        "urlMappingObj": {
+            "mapVarType": "str",
+            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
+        },
+        "ret": "json",
+        "retMappingObj": {},
+        "reqBody": "bh.local.updateRequest",
+        "reqBodyObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "updateRequest"
+        },
+        "resultMapping": "bh.local.updateResponse",
+        "resultMappingObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "updateResponse"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "headersObj": [
+            {
+                "key": "Content-Type",
+                "defaultValue": "application/json"
+            }
+        ],
+        "headerMappingObj": {},
+        "params": {},
+        "paramsObj": [],
+        "paramMappingObj": {},
+        "useAuthTypeMappingObj": {},
+        "useAuthUsername": "",
+        "useAuthUsernameMappingObj": "",
+        "useAuthPassword": "",
+        "useAuthPasswordMappingObj": "",
+        "useAuthToken": "",
+        "useAuthTokenMappingObj": "",
+        "useQueryString": false,
+        "tls": "",
+        "followRedirect": true,
+        "paytoqs": false,
+        "useAuthentication": false,
+        "rejectUnauthorized": false,
+        "proxy": "",
+        "useProxy": false,
+        "usetls": false,
+        "cookiesMapObj": {},
+        "cookiesList": {},
+        "switchStates": {
+            "cookies": "Map"
+        },
+        "editableListData": {},
+        "timeout": {
+            "type": "num",
+            "value": ""
+        },
+        "functionName": "sd_CNKH3aMFT8xOsBjr",
+        "category": "HTTP",
+        "x": 865,
+        "y": 380,
+        "wires": [
+            [
+                "sd_yfgyIEQfSCseFnYp"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_yfgyIEQfSCseFnYp",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "PrepareResponse",
+        "script": "// bh.local.response = {\n//     success: true,\n//     message: \"Loan saved successfully\",\n//     data: bh.local.updateResponse\n// };\n\n// console.log(\"===== CRUD RESPONSE =====\");\n// console.log(JSON.stringify(bh.local.updateResponse, null, 2));\n\n// bh.local.output = {\n//     success: true,\n//     data: bh.local.updateResponse\n// };\n\nlet response;\n\nif (bh.local.createResponse) {\n    response = bh.local.createResponse;\n} else {\n    response = bh.local.updateResponse;\n}\n\nconsole.log(\"===== CRUD RESPONSE =====\");\n\nconsole.log(\n    JSON.stringify(response, null, 2)\n);\n\nbh.local.output = {\n    success: true,\n    message: \"Draft saved successfully\",\n    data: response\n};",
+        "functionName": "prepareResponse",
+        "category": "Function",
+        "x": 1005,
+        "y": 320,
+        "wires": [
+            [
+                "sd_18gFPQjmlB2MGN54"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_RKHjL8nmnjxyuyBn",
+        "type": "HttpIn",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "start",
+        "name": "",
+        "path": "/submit-loan",
+        "uploadpath": "",
+        "summary": "",
+        "description": "",
+        "method": "post",
+        "sequenceId": "",
+        "consumes": "",
+        "produces": "",
+        "filetype": "path",
+        "acceptFileUpload": false,
+        "useDataModel": false,
+        "dataModelIsArray": false,
+        "erd": "",
+        "erdName": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "responses": [],
+            "params": [],
+            "produces": [],
+            "consumes": []
+        },
+        "inputs": 0,
+        "outputs": 1,
+        "validateRequestUsingSwaggerDocs": false,
+        "category": "HTTP",
+        "x": 285,
+        "y": 580,
+        "wires": [
+            [
+                "sd_kO8gj7QgAnW5sg73"
+            ]
+        ],
+        "__ssdTypeInputs__": {
+            "uploadpath": {
+                "type": "str",
+                "value": "",
+                "nullable": "true",
+                "nullableValue": "",
+                "constant": false
+            }
+        },
+        "__n_excludedFromValidation__": {},
+        "generateNext": true,
+        "serviceName": "loan_business_service",
+        "functionName": "sd_RKHjL8nmnjxyuyBn"
+    },
+    {
+        "id": "sd_YUiD7IkAkwWZTRyM",
+        "type": "HttpOut",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "headers": {},
+        "responseBody": {
+            "type": "bh.local",
+            "value": "output",
+            "ssd_typedInputField": true
+        },
+        "httpcode": {
+            "type": "num",
+            "value": 200,
+            "ssd_typedInputField": true
+        },
+        "responseType": "obj",
+        "swaggerResponse": {},
+        "responseMapping": {
+            "status": 200,
+            "obj": "bh.local.output",
+            "send": "bh.local.output"
+        },
+        "dataModelIsArray": false,
+        "inputs": 1,
+        "outputs": 0,
+        "erd": "",
+        "entity": "",
+        "entityId": "",
+        "ref": "",
+        "editableListData": {
+            "headers": [],
+            "produces": [],
+            "responses": []
+        },
+        "cookiesList": {},
+        "switchStates": {
+            "headers": "Map",
+            "cookies": "Map"
+        },
+        "functionName": "sd_YUiD7IkAkwWZTRyM",
+        "category": "HTTP",
+        "x": 1145,
+        "y": 580,
+        "wires": [],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_0EvC0nKvOQkt1i9j",
         "type": "ServerHttpRequest",
         "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
         "viewType": "server",
@@ -206,213 +414,10 @@
             "type": "num",
             "value": ""
         },
-        "functionName": "sd_CNKH3aMFT8xOsBjr",
-        "category": "HTTP",
-        "x": 505,
-        "y": 360,
-        "wires": [
-            [
-                "sd_yfgyIEQfSCseFnYp"
-            ]
-        ],
-        "__n_excludedFromValidation__": {},
-        "generateNext": false,
-        "serviceName": "loan_business_service",
-        "generated": true
-    },
-    {
-        "id": "sd_yfgyIEQfSCseFnYp",
-        "type": "Script",
-        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
-        "viewType": "common",
-        "nodeType": "flow",
-        "name": "PrepareResponse",
-        "script": "// bh.local.response = {\n//     success: true,\n//     message: \"Loan saved successfully\",\n//     data: bh.local.updateResponse\n// };\n\nconsole.log(\"===== CRUD RESPONSE =====\");\nconsole.log(JSON.stringify(bh.local.updateResponse, null, 2));\n\nbh.local.output = {\n    success: true,\n    data: bh.local.updateResponse\n};",
-        "functionName": "prepareResponse",
-        "category": "Function",
-        "x": 645,
-        "y": 360,
-        "wires": [
-            [
-                "sd_18gFPQjmlB2MGN54"
-            ]
-        ],
-        "__n_excludedFromValidation__": {},
-        "generateNext": false,
-        "serviceName": "loan_business_service",
-        "generated": true
-    },
-    {
-        "id": "sd_RKHjL8nmnjxyuyBn",
-        "type": "HttpIn",
-        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
-        "viewType": "server",
-        "nodeType": "start",
-        "name": "",
-        "path": "/submit-loan",
-        "uploadpath": "",
-        "summary": "",
-        "description": "",
-        "method": "post",
-        "sequenceId": "",
-        "consumes": "",
-        "produces": "",
-        "filetype": "path",
-        "acceptFileUpload": false,
-        "useDataModel": false,
-        "dataModelIsArray": false,
-        "uploadFileOptions": "",
-        "erd": "",
-        "erdName": "",
-        "entity": "",
-        "entityId": "",
-        "ref": "",
-        "editableListData": {
-            "responses": [],
-            "params": [],
-            "produces": [],
-            "consumes": []
-        },
-        "inputs": 0,
-        "outputs": 1,
-        "validateRequestUsingSwaggerDocs": false,
-        "category": "HTTP",
-        "x": 180,
-        "y": 520,
-        "wires": [
-            [
-                "sd_kO8gj7QgAnW5sg73"
-            ]
-        ],
-        "__ssdTypeInputs__": {
-            "uploadpath": {
-                "type": "str",
-                "value": "",
-                "nullable": "true",
-                "nullableValue": "",
-                "constant": false
-            }
-        },
-        "__n_excludedFromValidation__": {},
-        "generateNext": true,
-        "serviceName": "loan_business_service",
-        "functionName": "sd_RKHjL8nmnjxyuyBn"
-    },
-    {
-        "id": "sd_YUiD7IkAkwWZTRyM",
-        "type": "HttpOut",
-        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
-        "viewType": "server",
-        "nodeType": "flow",
-        "name": "",
-        "headers": {},
-        "responseBody": {
-            "type": "bh.local",
-            "value": "output",
-            "ssd_typedInputField": true
-        },
-        "httpcode": {
-            "type": "num",
-            "value": 200,
-            "ssd_typedInputField": true
-        },
-        "responseType": "obj",
-        "swaggerResponse": {},
-        "responseMapping": {
-            "status": 200,
-            "obj": "bh.local.output",
-            "send": "bh.local.output"
-        },
-        "dataModelIsArray": false,
-        "cookies": [],
-        "inputs": 1,
-        "outputs": 0,
-        "erd": "",
-        "entity": "",
-        "entityId": "",
-        "ref": "",
-        "editableListData": {
-            "headers": [],
-            "produces": [],
-            "responses": []
-        },
-        "cookiesList": {},
-        "switchStates": {
-            "headers": "Map",
-            "cookies": "Map"
-        },
-        "functionName": "sd_YUiD7IkAkwWZTRyM",
-        "category": "HTTP",
-        "x": 825,
-        "y": 520,
-        "wires": [],
-        "__n_excludedFromValidation__": {},
-        "generateNext": false,
-        "serviceName": "loan_business_service",
-        "generated": true
-    },
-    {
-        "id": "sd_0EvC0nKvOQkt1i9j",
-        "type": "ServerHttpRequest",
-        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
-        "viewType": "server",
-        "nodeType": "flow",
-        "name": "",
-        "method": "post",
-        "methodMappingObj": {},
-        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
-        "urlMappingObj": {
-            "mapVarType": "str",
-            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
-        },
-        "ret": "json",
-        "retMappingObj": {},
-        "reqBody": "bh.local.requestBody",
-        "reqBodyObj": {
-            "mapVarType": "bh.local",
-            "mapVarValue": "requestBody"
-        },
-        "resultMapping": "bh.responce",
-        "resultMappingObj": {
-            "mapVarType": "bh",
-            "mapVarValue": "responce"
-        },
-        "headers": {},
-        "headersObj": [],
-        "headerMappingObj": {},
-        "params": {},
-        "paramsObj": [],
-        "paramMappingObj": {},
-        "useAuthTypeMappingObj": {},
-        "useAuthUsername": "",
-        "useAuthUsernameMappingObj": "",
-        "useAuthPassword": "",
-        "useAuthPasswordMappingObj": "",
-        "useAuthToken": "",
-        "useAuthTokenMappingObj": "",
-        "useQueryString": false,
-        "tls": "",
-        "followRedirect": true,
-        "paytoqs": false,
-        "useAuthentication": false,
-        "rejectUnauthorized": false,
-        "proxy": "",
-        "useProxy": false,
-        "usetls": false,
-        "cookiesMapObj": {},
-        "cookiesList": {},
-        "switchStates": {
-            "cookies": "Map"
-        },
-        "editableListData": {},
-        "timeout": {
-            "type": "num",
-            "value": ""
-        },
         "functionName": "sd_0EvC0nKvOQkt1i9j",
         "category": "HTTP",
-        "x": 505,
-        "y": 520,
+        "x": 845,
+        "y": 660,
         "wires": [
             [
                 "sd_cmXC2P6KdsmgnkiP"
@@ -430,14 +435,14 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "",
-        "script": "console.log(\"Body:\", JSON.stringify(bh.input.body, null, 2));\n\nconst loan = bh.input.body.loan_application || bh.input.body;\n\nif (!loan) {\n    throw new Error(\"Loan object not found in request.\");\n}\n\nloan.status = \"Submitted\";\n\nbh.local.requestBody = {\n    loan_application: loan\n};",
+        "script": "const req = bh.input.body;\n\nconsole.log(\"===== SUBMIT INPUT =====\");\nconsole.log(JSON.stringify(req, null, 2));\n\nconst existingApplicationId = req.application_id;\n\nconst hasApplicationId =\n    existingApplicationId !== undefined &&\n    existingApplicationId !== null &&\n    existingApplicationId !== \"\";\n\nconsole.log(\"Existing application_id:\", existingApplicationId);\nconsole.log(\"hasApplicationId:\", hasApplicationId);\n\nif (hasApplicationId) {\n\n    // =========================\n    // UPDATE EXISTING DRAFT\n    // =========================\n\n    bh.local.submitType = \"UPDATE\";\n\n    bh.local.loanApplication = {\n        application_id: req.application_id,\n        application_number: req.application_number || \"\",\n        customer_name: req.customer_name || \"\",\n        dob: req.dob || null,\n        gender: req.gender || \"\",\n        mobile: req.mobile || \"\",\n        email: req.email || \"\",\n        address: req.address || \"\",\n        employment_type: req.employment_type || \"\",\n        employer_name: req.employer_name || \"\",\n        monthly_income: req.monthly_income || 0,\n        loan_type: req.loan_type || \"\",\n        loan_amount: req.loan_amount || 0,\n        loan_tenure: req.loan_tenure || 0,\n        purpose: req.purpose || \"\",\n        credit_score: req.credit_score || 0,\n        risk_category: req.risk_category || \"\",\n        emi: req.emi || 0,\n        status: \"SUBMITTED\",\n        loan_account_number: req.loan_account_number || \"\",\n        remarks: req.remarks || \"\",\n        created_date: req.created_date || new Date().toISOString(),\n        decision: req.decision || \"\",\n        interest_rate: req.interest_rate || 0\n    };\n\n    // Generate application number if existing draft doesn't have one\n    if (!bh.local.loanApplication.application_number) {\n        bh.local.loanApplication.application_number =\n            \"APP\" + Math.floor(10000000 + Math.random() * 90000000);\n    }\n\n} else {\n\n    // =========================\n    // DIRECT SUBMIT\n    // =========================\n\n    bh.local.submitType = \"CREATE\";\n\n    const applicationId =\n        \"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx\".replace(\n            /[xy]/g,\n            function (c) {\n                const r = Math.random() * 16 | 0;\n                const v = c === \"x\"\n                    ? r\n                    : (r & 0x3 | 0x8);\n\n                return v.toString(16);\n            }\n        );\n\n    const applicationNumber =\n        \"APP\" + Math.floor(10000000 + Math.random() * 90000000);\n\n    bh.local.loanApplication = {\n        application_id: applicationId,\n        application_number: applicationNumber,\n\n        customer_name: req.customer_name || \"\",\n        dob: req.dob || null,\n        gender: req.gender || \"\",\n        mobile: req.mobile || \"\",\n\n        email: req.email || \"\",\n        address: req.address || \"\",\n\n        employment_type: req.employment_type || \"\",\n        employer_name: req.employer_name || \"\",\n        monthly_income: req.monthly_income || 0,\n\n        loan_type: req.loan_type || \"\",\n        loan_amount: req.loan_amount || 0,\n        loan_tenure: req.loan_tenure || 0,\n        purpose: req.purpose || \"\",\n\n        credit_score: req.credit_score || 0,\n        risk_category: req.risk_category || \"\",\n        emi: req.emi || 0,\n\n        status: \"SUBMITTED\",\n\n        loan_account_number: req.loan_account_number || \"\",\n        remarks: req.remarks || \"\",\n\n        created_date: new Date().toISOString(),\n\n        decision: req.decision || \"\",\n        interest_rate: req.interest_rate || 0\n    };\n}\n\nconsole.log(\"===== SUBMIT TYPE =====\");\nconsole.log(bh.local.submitType);\n\nconsole.log(\"===== SUBMIT APPLICATION =====\");\nconsole.log(\n    JSON.stringify(bh.local.loanApplication, null, 2)\n);",
         "functionName": "sd_kO8gj7QgAnW5sg73",
         "category": "Function",
-        "x": 325,
-        "y": 520,
+        "x": 430,
+        "y": 580,
         "wires": [
             [
-                "sd_0EvC0nKvOQkt1i9j"
+                "sd_woLlOtrkQMZJ7qC1"
             ]
         ],
         "__n_excludedFromValidation__": {},
@@ -452,11 +457,11 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "",
-        "script": "bh.local.output = {\n    success: true,\n    message: \"Loan submitted successfully.\",\n    data: bh.local.response\n};",
+        "script": "console.log(\"===== SUBMIT SUCCESS =====\");\n\nbh.local.output = {\n    success: true,\n    message: \"Loan submitted successfully.\",\n    application_id: bh.local.loanApplication.application_id,\n    application_number:\n        bh.local.loanApplication.application_number,\n    status: \"SUBMITTED\",\n    data: bh.local.loanApplication\n};\n\nconsole.log(\n    JSON.stringify(bh.local.output, null, 2)\n);",
         "functionName": "sd_cmXC2P6KdsmgnkiP",
         "category": "Function",
-        "x": 645,
-        "y": 520,
+        "x": 1005,
+        "y": 580,
         "wires": [
             [
                 "sd_YUiD7IkAkwWZTRyM"
@@ -502,8 +507,8 @@
         "outputs": 1,
         "validateRequestUsingSwaggerDocs": false,
         "category": "HTTP",
-        "x": 200,
-        "y": 760,
+        "x": 165,
+        "y": 800,
         "wires": [
             [
                 "sd_RXE1Xyh0zHCIlZeG"
@@ -568,8 +573,8 @@
         },
         "functionName": "sd_NAaOmSU1x4ATEywB",
         "category": "HTTP",
-        "x": 885,
-        "y": 760,
+        "x": 850,
+        "y": 800,
         "wires": [],
         "__n_excludedFromValidation__": {},
         "generateNext": false,
@@ -636,8 +641,8 @@
         },
         "functionName": "sd_tA8LJ98dsZsz6rzd",
         "category": "HTTP",
-        "x": 540,
-        "y": 760,
+        "x": 505,
+        "y": 800,
         "wires": [
             [
                 "sd_NpoLy9h9LxoomMES"
@@ -655,11 +660,11 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "PrepareLoanOfficerReview Script",
-        "script": "// const loan = bh.input.body.loan_application;\n// console.log(JSON.stringify(bh.input.body, null, 2));\n// loan.decision = bh.input.body.decision;\n// loan.remarks = bh.input.body.remarks;\n\n// if (bh.input.body.decision === \"APPROVE\") {\n//     loan.status = \"Loan Officer Approved\";\n// } else {\n//     loan.status = \"Loan Officer Rejected\";\n// }\n\n// bh.local.requestBody = {\n//     loan_application: loan\n// };\n\nconst loan = bh.input.body.loan_application;\nconsole.log(\"Incoming Body:=================\");\nconsole.log(JSON.stringify(bh.input.body, null, 2));\nconst decision = loan.decision;\nconst remarks = loan.remarks;\n\nif (decision === \"APPROVE\") {\n\n    loan.status = \"Loan Officer Approved\";\n\n} else {\n\n    loan.status = \"Loan Officer Rejected\";\n\n}\n\nloan.remarks = remarks;\nloan.decision = decision;\n\nbh.local.requestBody = {\n    loan_application: loan\n};",
+        "script": "// const loan = bh.input.body.loan_application;\n// console.log(JSON.stringify(bh.input.body, null, 2));\n// loan.decision = bh.input.body.decision;\n// loan.remarks = bh.input.body.remarks;\n\n// if (bh.input.body.decision === \"APPROVE\") {\n//     loan.status = \"Loan Officer Approved\";\n// } else {\n//     loan.status = \"Loan Officer Rejected\";\n// }\n\n// bh.local.requestBody = {\n//     loan_application: loan\n// };\n\n// const loan = bh.input.body.loan_application;\n// console.log(\"Incoming Body:=================\");\n// console.log(JSON.stringify(bh.input.body, null, 2));\n// const decision = loan.decision;\n// const remarks = loan.remarks;\n\n// if (decision === \"APPROVE\") {\n\n//     loan.status = \"Loan Officer Approved\";\n\n// } else {\n\n//     loan.status = \"Loan Officer Rejected\";\n\n// }\n\n// loan.remarks = remarks;\n// loan.decision = decision;\n\n// bh.local.requestBody = {\n//     loan_application: loan\n// };\n\n\n\nconst loan = bh.input.body.loan_application;\n\nif (!loan) {\n    throw new Error(\"loan_application is required\");\n}\n\nconst decision = loan.decision;\n\nif (decision !== \"APPROVE\" && decision !== \"REJECT\") {\n    throw new Error(\"Decision must be APPROVE or REJECT\");\n}\n\nif (decision === \"APPROVE\") {\n    loan.status = \"Loan Officer Approved\";\n} else {\n    loan.status = \"Loan Officer Rejected\";\n}\n\nbh.local.requestBody = {\n    loan_application: loan\n};\n\nconsole.log(\"===== LOAN OFFICER UPDATE =====\");\nconsole.log(JSON.stringify(bh.local.requestBody, null, 2));",
         "functionName": "prepareLoanOfficerReviewScript",
         "category": "Function",
-        "x": 345,
-        "y": 760,
+        "x": 310,
+        "y": 800,
         "wires": [
             [
                 "sd_tA8LJ98dsZsz6rzd"
@@ -680,8 +685,8 @@
         "script": "bh.local.output = {\n\n    success: true,\n\n    message: \"Loan Officer Review completed successfully.\",\n\n    data: bh.local.updateResponse\n\n};",
         "functionName": "sd_NpoLy9h9LxoomMES",
         "category": "Function",
-        "x": 720,
-        "y": 760,
+        "x": 685,
+        "y": 800,
         "wires": [
             [
                 "sd_NAaOmSU1x4ATEywB"
@@ -808,7 +813,7 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "",
-        "script": "const loan = bh.input.body.loan_application;\n\n// Business Rule:\n// Loan amount can be changed only when credit score < 80\n\nif (loan.credit_score < 80) {\n\n    console.log(\"Loan Amount can be modified.\");\n\n} else {\n\n    console.log(\"Loan Amount cannot be modified.\");\n\n}\n\n// Approval Decision\n\nif (loan.decision === \"APPROVE\") {\n\n    loan.status = \"Credit Manager Approved\";\n\n} else {\n\n    loan.status = \"Credit Manager Rejected\";\n\n}\n\nbh.local.requestBody = {\n    loan_application: loan\n};",
+        "script": "// const loan = bh.input.body.loan_application;\n\n// // Business Rule:\n// // Loan amount can be changed only when credit score < 80\n\n// if (loan.credit_score < 80) {\n\n//     console.log(\"Loan Amount can be modified.\");\n\n// } else {\n\n//     console.log(\"Loan Amount cannot be modified.\");\n\n// }\n\n// // Approval Decision\n\n// if (loan.decision === \"APPROVE\") {\n\n//     loan.status = \"Credit Manager Approved\";\n\n// } else {\n\n//     loan.status = \"Credit Manager Rejected\";\n\n// }\n\n// bh.local.requestBody = {\n//     loan_application: loan\n// };\nconst loan = bh.input.body.loan_application;\n\nif (!loan) {\n    throw new Error(\"loan_application is required\");\n}\n\nconst decision = loan.decision;\n\nif (decision !== \"APPROVE\" && decision !== \"REJECT\") {\n    throw new Error(\"Decision must be APPROVE or REJECT\");\n}\n\nif (loan.risk_score === undefined || loan.risk_score === null) {\n    throw new Error(\"risk_score is required\");\n}\n\nconst riskScore = Number(loan.risk_score);\n\nif (Number.isNaN(riskScore)) {\n    throw new Error(\"risk_score must be a valid number\");\n}\n\n// Risk Score < 80 means Loan Amount can be modified\nif (riskScore < 80) {\n\n    loan.remarks =\n        loan.remarks ||\n        \"Risk Score is below 80. Loan amount modification is allowed.\";\n\n} else {\n\n    loan.remarks =\n        loan.remarks ||\n        \"Risk Score is 80 or above. Loan amount modification is not allowed.\";\n\n}\n\n// Credit Manager Approval / Rejection\nif (decision === \"APPROVE\") {\n\n    loan.status = \"Credit Manager Approved\";\n\n} else {\n\n    loan.status = \"Credit Manager Rejected\";\n}\n\nbh.local.requestBody = {\n    loan_application: loan\n};\n\nconsole.log(\"===== CREDIT MANAGER UPDATE =====\");\nconsole.log(JSON.stringify(bh.local.requestBody, null, 2));",
         "functionName": "sd_vA2jw72BfcZOk0Vn",
         "category": "Function",
         "x": 325,
@@ -830,7 +835,7 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "",
-        "script": "bh.local.output = {\n\n    success: true,\n\n    message: \"Credit Manager Approval completed successfully.\",\n\n    data: bh.local.updateResponse\n\n};",
+        "script": "bh.local.output = {\n\n    success: true,\n\n    message: \"Credit Manager review completed successfully.\",\n\n    data: bh.local.updateResponse\n\n};",
         "functionName": "sd_Rmgi7OEqU1u7CR30",
         "category": "Function",
         "x": 725,
@@ -853,6 +858,7 @@
         "nodeType": "flow",
         "name": "",
         "method": "post",
+        "methodMapping": "",
         "methodMappingObj": {},
         "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
@@ -860,6 +866,7 @@
             "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
+        "retMapping": "",
         "retMappingObj": {},
         "reqBody": "bh.local.requestBody",
         "reqBodyObj": {
@@ -880,11 +887,16 @@
                 "defaultValue": "application/json"
             }
         ],
+        "headerMapping": "",
         "headerMappingObj": {},
         "params": {},
         "paramsObj": [],
+        "paramMapping": "",
         "paramMappingObj": {},
+        "authType": "",
         "useAuthTypeMappingObj": {},
+        "useAuthTypeMap": {},
+        "useAuthType": "",
         "useAuthUsername": "",
         "useAuthUsernameMappingObj": "",
         "useAuthPassword": "",
@@ -900,6 +912,7 @@
         "proxy": "",
         "useProxy": false,
         "usetls": false,
+        "cookies": [],
         "cookiesMapObj": {},
         "cookiesList": {},
         "switchStates": {
@@ -943,6 +956,7 @@
         "acceptFileUpload": false,
         "useDataModel": false,
         "dataModelIsArray": false,
+        "uploadFileOptions": "",
         "erd": "",
         "erdName": "",
         "entity": "",
@@ -1039,7 +1053,7 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "",
-        "script": "console.log(\"===== Generate Loan Account =====\");\n\nconst loan = bh.input.body.loan_application;\n\nconsole.log(\"Incoming Loan:\");\nconsole.log(JSON.stringify(loan, null, 2));\n\nbh.local.loan = loan;\n\nif (loan.decision === \"APPROVE\") {\n\n    console.log(\"Loan Approved.\");\n\n    const accountNumber =\n        \"LN\" +\n        new Date().getFullYear() +\n        Math.floor(100000 + Math.random() * 900000);\n\n    loan.loan_account_number = accountNumber;\n    loan.status = \"Disbursed\";\n    loan.remarks = \"Loan Account Generated\";\n\n    bh.local.requestBody = {\n        loan_application: loan\n    };\n\n    bh.local.route = \"APPROVE\";\n\n} else {\n\n    console.log(\"Loan Rejected.\");\n\n    bh.local.route = \"REJECT\";\n}",
+        "script": "// // console.log(\"===== Generate Loan Account =====\");\n\n// // const loan = bh.input.body.loan_application;\n\n// // console.log(\"Incoming Loan:\");\n// // console.log(JSON.stringify(loan, null, 2));\n\n// // bh.local.loan = loan;\n\n// // if (loan.decision === \"APPROVE\") {\n\n// //     console.log(\"Loan Approved.\");\n\n// //     const accountNumber =\n// //         \"LN\" +\n// //         new Date().getFullYear() +\n// //         Math.floor(100000 + Math.random() * 900000);\n\n// //     loan.loan_account_number = accountNumber;\n// //     loan.status = \"Disbursed\";\n// //     loan.remarks = \"Loan Account Generated\";\n\n// //     bh.local.requestBody = {\n// //         loan_application: loan\n// //     };\n\n// //     bh.local.route = \"APPROVE\";\n\n// // } else {\n\n// //     console.log(\"Loan Rejected.\");\n\n// //     bh.local.route = \"REJECT\";\n// // }\n\n\n// console.log(\"===== GENERATE LOAN ACCOUNT =====\");\n\n// const loan = bh.input.body.loan_application;\n\n// if (!loan) {\n//     throw new Error(\"loan_application is required\");\n// }\n\n// console.log(\"===== INCOMING LOAN =====\");\n// console.log(JSON.stringify(loan, null, 2));\n\n// bh.local.loan = loan;\n\n// if (loan.decision === \"APPROVE\") {\n\n//     console.log(\"Loan Approved.\");\n\n//     const accountNumber =\n//         \"LN\" +\n//         new Date().getFullYear() +\n//         Math.floor(100000 + Math.random() * 900000);\n\n//     loan.loan_account_number = accountNumber;\n//     loan.status = \"Disbursed\";\n//     loan.remarks = \"Loan Account Generated\";\n\n//     /*\n//      * Prepare complete DB object\n//      */\n//     bh.local.requestBody = {\n//         loan_application: {\n//             application_id: loan.application_id,\n//             application_number: loan.application_number,\n\n//             customer_name: loan.customer_name || \"\",\n//             dob: loan.dob || null,\n//             gender: loan.gender || \"\",\n//             mobile: loan.mobile || \"\",\n\n//             email: loan.email || \"\",\n//             address: loan.address || \"\",\n\n//             employment_type: loan.employment_type || \"\",\n//             employer_name: loan.employer_name || \"\",\n//             monthly_income: loan.monthly_income || 0,\n\n//             loan_type: loan.loan_type || \"\",\n//             loan_amount: loan.loan_amount || 0,\n//             loan_tenure: loan.loan_tenure || 0,\n//             purpose: loan.purpose || \"\",\n\n//             credit_score: loan.credit_score || 0,\n//             risk_category: loan.risk_category || \"\",\n//             emi: loan.emi || 0,\n\n//             status: \"Disbursed\",\n\n//             loan_account_number: accountNumber,\n\n//             remarks: \"Loan Account Generated\",\n\n//             created_date: loan.created_date || new Date().toISOString(),\n\n//             decision: loan.decision || \"\",\n\n//             interest_rate: loan.interest_rate || 0\n//         }\n//     };\n\n//     bh.local.route = \"APPROVE\";\n\n//     console.log(\"===== UPDATE REQUEST BODY =====\");\n//     console.log(\n//         JSON.stringify(bh.local.requestBody, null, 2)\n//     );\n\n// } else {\n\n//     console.log(\"Loan Rejected.\");\n\n//     bh.local.route = \"REJECT\";\n// }\n\nconst loan = bh.input.body.loan_application;\n\nif (!loan) {\n    throw new Error(\"loan_application is required\");\n}\n\nif (!loan.application_id) {\n    throw new Error(\"application_id is required\");\n}\n\nif (!loan.application_number) {\n    throw new Error(\"application_number is required\");\n}\n\nif (loan.decision === \"APPROVE\") {\n\n    const accountNumber =\n        \"LN\" +\n        new Date().getFullYear() +\n        Math.floor(100000 + Math.random() * 900000);\n\n    loan.loan_account_number = accountNumber;\n    loan.status = \"Disbursed\";\n    loan.remarks = \"Loan Account Generated\";\n\n    bh.local.requestBody = {\n        loan_application: loan\n    };\n\n    bh.local.route = \"APPROVE\";\n\n} else {\n\n    bh.local.loan = loan;\n    bh.local.route = \"REJECT\";\n}\n\nconsole.log(\"===== GENERATE ACCOUNT REQUEST =====\");\nconsole.log(JSON.stringify(bh.local.requestBody, null, 2));",
         "functionName": "sd_3WxhGiR8VvuVFHuc",
         "category": "Function",
         "x": 345,
@@ -1061,7 +1075,7 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "",
-        "script": "console.log(\"Database Updated Successfully\");\n\nbh.local.output = {\n\n    success: true,\n\n    message: \"Loan Account generated successfully.\",\n\n    loanAccountNumber:\n        bh.local.requestBody.loan_application.loan_account_number,\n\n    data: bh.input\n};",
+        "script": "// console.log(\"Database Updated Successfully\");\n\n// bh.local.output = {\n\n//     success: true,\n\n//     message: \"Loan Account generated successfully.\",\n\n//     loanAccountNumber:\n//         bh.local.requestBody.loan_application.loan_account_number,\n\n//     data: bh.input\n// };\n\nconsole.log(\"===== DATABASE UPDATE SUCCESS =====\");\n\nbh.local.output = {\n\n    success: true,\n\n    message: \"Loan Account generated successfully.\",\n\n    application_id:\n        bh.local.requestBody.loan_application.application_id,\n\n    application_number:\n        bh.local.requestBody.loan_application.application_number,\n\n    loan_account_number:\n        bh.local.requestBody.loan_application.loan_account_number,\n\n    status:\n        bh.local.requestBody.loan_application.status,\n\n    data: bh.local.updateResponse\n};\n\nconsole.log(\n    JSON.stringify(bh.local.output, null, 2)\n);",
         "functionName": "sd_ZmaXtBvYMpkwza1S",
         "category": "Function",
         "x": 705,
@@ -1084,6 +1098,7 @@
         "nodeType": "flow",
         "name": "",
         "method": "post",
+        "methodMapping": "",
         "methodMappingObj": {},
         "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
@@ -1091,6 +1106,7 @@
             "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
+        "retMapping": "",
         "retMappingObj": {},
         "reqBody": "bh.local.requestBody",
         "reqBodyObj": {
@@ -1104,11 +1120,16 @@
         },
         "headers": {},
         "headersObj": [],
+        "headerMapping": "",
         "headerMappingObj": {},
         "params": {},
         "paramsObj": [],
+        "paramMapping": "",
         "paramMappingObj": {},
+        "authType": "",
         "useAuthTypeMappingObj": {},
+        "useAuthTypeMap": {},
+        "useAuthType": "",
         "useAuthUsername": "",
         "useAuthUsernameMappingObj": "",
         "useAuthPassword": "",
@@ -1124,6 +1145,7 @@
         "proxy": "",
         "useProxy": false,
         "usetls": false,
+        "cookies": [],
         "cookiesMapObj": {},
         "cookiesList": {},
         "switchStates": {
@@ -1428,6 +1450,7 @@
         "nodeType": "flow",
         "name": "",
         "method": "post",
+        "methodMapping": "",
         "methodMappingObj": {},
         "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
@@ -1435,6 +1458,7 @@
             "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
+        "retMapping": "",
         "retMappingObj": {},
         "reqBody": "bh.local.requestBody",
         "reqBodyObj": {
@@ -1445,6 +1469,179 @@
         "resultMappingObj": {
             "mapVarType": "bh.local",
             "mapVarValue": "updateResponse"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "headersObj": [
+            {
+                "key": "Content-Type",
+                "defaultValue": "application/json"
+            }
+        ],
+        "headerMapping": "",
+        "headerMappingObj": {},
+        "params": {},
+        "paramsObj": [],
+        "paramMapping": "",
+        "paramMappingObj": {},
+        "authType": "",
+        "useAuthTypeMappingObj": {},
+        "useAuthTypeMap": {},
+        "useAuthType": "",
+        "useAuthUsername": "",
+        "useAuthUsernameMappingObj": "",
+        "useAuthPassword": "",
+        "useAuthPasswordMappingObj": "",
+        "useAuthToken": "",
+        "useAuthTokenMappingObj": "",
+        "useQueryString": false,
+        "tls": "",
+        "followRedirect": true,
+        "paytoqs": false,
+        "useAuthentication": false,
+        "rejectUnauthorized": false,
+        "proxy": "",
+        "useProxy": false,
+        "usetls": false,
+        "cookies": [],
+        "cookiesMapObj": {},
+        "cookiesList": {},
+        "switchStates": {
+            "cookies": "Map"
+        },
+        "editableListData": {},
+        "timeout": {
+            "type": "num",
+            "value": ""
+        },
+        "functionName": "sd_1ER5kmN8TM2F0hHF",
+        "category": "HTTP",
+        "x": 545,
+        "y": 1640,
+        "wires": [
+            [
+                "sd_sR9uqcJQDBQQB55Y"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_kuu9RgLV0lbtFJwa",
+        "type": "Switch",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "property": "isExistingDraft",
+        "propertyType": "bh.local",
+        "propertyGv": "bh.local.isExistingDraft",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "false",
+                "vt": "str",
+                "gv": "\"false\""
+            },
+            {
+                "t": "eq",
+                "v": "true",
+                "vt": "str",
+                "gv": "\"true\""
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "functionName": "sd_kuu9RgLV0lbtFJwa",
+        "category": "Function",
+        "x": 545,
+        "y": 300,
+        "wires": [
+            [
+                "sd_i2i5UinL8ILzSNXp"
+            ],
+            [
+                "sd_6DwIkIsqPF8Fu6oK"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_i2i5UinL8ILzSNXp",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "PrepareCreateDraft",
+        "script": "const loan = bh.local.loanApplication;\n\nconst applicationId =\n    loan.application_id || crypto.randomUUID();\n\nbh.local.createRequest = {\n    loan_application: {\n        application_id: applicationId,\n\n        // Draft does not have application number yet\n        application_number: \"\",\n\n        customer_name: loan.customer_name || \"\",\n        dob: loan.dob || null,\n        gender: loan.gender || \"\",\n        mobile: loan.mobile || \"\",\n        email: loan.email || \"\",\n        address: loan.address || \"\",\n\n        employment_type: loan.employment_type || \"\",\n        employer_name: loan.employer_name || \"\",\n        monthly_income: Number(loan.monthly_income || 0),\n\n        loan_type: loan.loan_type || \"\",\n        loan_amount: Number(loan.loan_amount || 0),\n        loan_tenure: Number(loan.loan_tenure || 0),\n\n        purpose: loan.purpose || \"\",\n\n        credit_score: Number(loan.credit_score || 0),\n        risk_category: loan.risk_category || \"\",\n        emi: Number(loan.emi || 0),\n\n        status: \"DRAFT\",\n\n        loan_account_number: \"\",\n        remarks: \"\",\n        created_date: new Date().toISOString(),\n\n        decision: \"\",\n\n        interest_rate: Number(loan.interest_rate || 0)\n    }\n};\n\nconsole.log(\"===== CREATE DRAFT REQUEST =====\");\nconsole.log(\n    JSON.stringify(bh.local.createRequest, null, 2)\n);",
+        "functionName": "prepareCreateDraft",
+        "category": "Function",
+        "x": 685,
+        "y": 200,
+        "wires": [
+            [
+                "sd_L1fBpjKKr49xBt2R"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_6DwIkIsqPF8Fu6oK",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "PrepareUpdateDraft",
+        "script": "const loan = bh.local.loanApplication;\n\nbh.local.updateRequest = {\n    loan_application: {\n        ...loan,\n\n        status: \"DRAFT\"\n    }\n};\n\nconsole.log(\"===== UPDATE DRAFT REQUEST =====\");\n\nconsole.log(\n    JSON.stringify(bh.local.updateRequest, null, 2)\n);",
+        "functionName": "prepareUpdateDraft",
+        "category": "Function",
+        "x": 685,
+        "y": 380,
+        "wires": [
+            [
+                "sd_CNKH3aMFT8xOsBjr"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_L1fBpjKKr49xBt2R",
+        "type": "ServerHttpRequest",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "",
+        "method": "post",
+        "methodMappingObj": {},
+        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create\"",
+        "urlMappingObj": {
+            "mapVarType": "str",
+            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create"
+        },
+        "ret": "json",
+        "retMappingObj": {},
+        "reqBody": "bh.local.createRequest",
+        "reqBodyObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "createRequest"
+        },
+        "resultMapping": "bh.local.createResponse",
+        "resultMappingObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "createResponse"
         },
         "headers": {
             "Content-Type": "application/json"
@@ -1485,13 +1682,180 @@
             "type": "num",
             "value": ""
         },
-        "functionName": "sd_1ER5kmN8TM2F0hHF",
+        "functionName": "sd_L1fBpjKKr49xBt2R",
         "category": "HTTP",
-        "x": 545,
-        "y": 1640,
+        "x": 860,
+        "y": 200,
         "wires": [
             [
-                "sd_sR9uqcJQDBQQB55Y"
+                "sd_yfgyIEQfSCseFnYp"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_woLlOtrkQMZJ7qC1",
+        "type": "Switch",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "",
+        "property": "submitType",
+        "propertyType": "bh.local",
+        "propertyGv": "bh.local.submitType",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "CREATE",
+                "vt": "str",
+                "gv": "\"CREATE\""
+            },
+            {
+                "t": "eq",
+                "v": "UPDATE",
+                "vt": "str",
+                "gv": "\"UPDATE\""
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "functionName": "sd_woLlOtrkQMZJ7qC1",
+        "category": "Function",
+        "x": 545,
+        "y": 580,
+        "wires": [
+            [
+                "sd_jHhyoqyB0ettMTi7"
+            ],
+            [
+                "sd_FwPhq6bQMIonTs9C"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_ljJd9jb53GTcCNEr",
+        "type": "ServerHttpRequest",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "server",
+        "nodeType": "flow",
+        "name": "create",
+        "method": "post",
+        "methodMappingObj": {},
+        "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create\"",
+        "urlMappingObj": {
+            "mapVarType": "str",
+            "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create"
+        },
+        "ret": "json",
+        "retMappingObj": {},
+        "reqBody": "bh.local.requestBody",
+        "reqBodyObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "requestBody"
+        },
+        "resultMapping": "bh.local.createResponse",
+        "resultMappingObj": {
+            "mapVarType": "bh.local",
+            "mapVarValue": "createResponse"
+        },
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "headersObj": [
+            {
+                "key": "Content-Type",
+                "defaultValue": "application/json"
+            }
+        ],
+        "headerMappingObj": {},
+        "params": {},
+        "paramsObj": [],
+        "paramMappingObj": {},
+        "useAuthTypeMappingObj": {},
+        "useAuthUsername": "",
+        "useAuthUsernameMappingObj": "",
+        "useAuthPassword": "",
+        "useAuthPasswordMappingObj": "",
+        "useAuthToken": "",
+        "useAuthTokenMappingObj": "",
+        "useQueryString": false,
+        "tls": "",
+        "followRedirect": true,
+        "paytoqs": false,
+        "useAuthentication": false,
+        "rejectUnauthorized": false,
+        "proxy": "",
+        "useProxy": false,
+        "usetls": false,
+        "cookiesMapObj": {},
+        "cookiesList": {},
+        "switchStates": {
+            "cookies": "Map"
+        },
+        "editableListData": {},
+        "timeout": {
+            "type": "num",
+            "value": ""
+        },
+        "functionName": "create",
+        "category": "HTTP",
+        "x": 845,
+        "y": 520,
+        "wires": [
+            [
+                "sd_cmXC2P6KdsmgnkiP"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_jHhyoqyB0ettMTi7",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "createResponse",
+        "script": "bh.local.requestBody = {\n    loan_application: bh.local.loanApplication\n};\n\nconsole.log(\"===== CREATE REQUEST =====\");\nconsole.log(\n    JSON.stringify(bh.local.requestBody, null, 2)\n);\n",
+        "functionName": "createResponse",
+        "category": "Function",
+        "x": 685,
+        "y": 520,
+        "wires": [
+            [
+                "sd_ljJd9jb53GTcCNEr"
+            ]
+        ],
+        "__n_excludedFromValidation__": {},
+        "generateNext": false,
+        "serviceName": "loan_business_service",
+        "generated": true
+    },
+    {
+        "id": "sd_FwPhq6bQMIonTs9C",
+        "type": "Script",
+        "z": "SSD_SERVICE_ID_sd_0me0le4ZMiAJhtND",
+        "viewType": "common",
+        "nodeType": "flow",
+        "name": "PrepareUpdateRequest",
+        "script": "console.log(\"===== UPDATE BRANCH STARTED =====\");\n\nconsole.log(\n    \"Loan Application:\",\n    JSON.stringify(bh.local.loanApplication, null, 2)\n);\n\nbh.local.requestBody = {\n    loan_application: bh.local.loanApplication\n};\n\nconsole.log(\n    \"===== UPDATE REQUEST BODY =====\"\n);\n\nconsole.log(\n    JSON.stringify(bh.local.requestBody, null, 2)\n);",
+        "functionName": "prepareUpdateRequest",
+        "category": "Function",
+        "x": 685,
+        "y": 660,
+        "wires": [
+            [
+                "sd_0EvC0nKvOQkt1i9j"
             ]
         ],
         "__n_excludedFromValidation__": {},

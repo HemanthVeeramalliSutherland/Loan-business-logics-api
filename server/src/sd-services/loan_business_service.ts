@@ -4,6 +4,7 @@ let instance = null;
 //append_imports_start
 
 import cookieParser from 'cookie-parser'; //_splitter_
+import * as crypto from 'crypto'; //_splitter_
 import { dirname } from 'path'; //_splitter_
 import { fileURLToPath } from 'url'; //_splitter_
 import { SDBaseService } from '../services/SDBaseService'; //_splitter_
@@ -303,21 +304,67 @@ export class loan_business_service {
       //     loan_application: req
       // };
 
-      console.log('===== INPUT BODY =====');
-      console.log(JSON.stringify(bh.input.body, null, 2));
+      // console.log("===== INPUT BODY =====");
+      // console.log(JSON.stringify(bh.input.body, null, 2));
 
-      const req = bh.input.body;
+      // const req = bh.input.body;
 
-      req.status = 'Draft';
+      // req.status = "Draft";
 
-      bh.local.requestBody = {
-        loan_application: req,
+      // bh.local.requestBody = {
+      //     loan_application: req
+      // };
+
+      // console.log("===== REQUEST BODY =====");
+      // console.log(JSON.stringify(bh.local.requestBody, null, 2));
+      // console.log("===== SAVE DRAFT INPUT =====");
+      // console.log(JSON.stringify(bh.input.body, null, 2));
+
+      // const body = bh.input.body || {};
+
+      // const loan = body.loan_application || body;
+
+      // // Check whether this is an existing draft
+      // bh.local.isExistingDraft = !!loan.application_id;
+
+      // // Keep the incoming loan data
+      // bh.local.loanApplication = {
+      //     ...loan,
+      //     status: "DRAFT"
+      // };
+
+      // console.log("Existing Draft:", bh.local.isExistingDraft);
+      // console.log("Loan Application:");
+      // console.log(JSON.stringify(bh.local.loanApplication, null, 2));
+      console.log('===== SAVE DRAFT INPUT =====');
+
+      const body = bh.input.body || {};
+
+      console.log(JSON.stringify(body, null, 2));
+
+      const loan = body.loan_application || body;
+
+      // Store the loan application
+      bh.local.loanApplication = {
+        ...loan,
+        status: 'DRAFT',
       };
 
-      console.log('===== REQUEST BODY =====');
-      console.log(JSON.stringify(bh.local.requestBody, null, 2));
+      // Check application_id
+      if (loan.application_id) {
+        bh.local.isExistingDraft = 'true';
+      } else {
+        bh.local.isExistingDraft = 'false';
+      }
+
+      console.log('isExistingDraft:', bh.local.isExistingDraft);
+
+      console.log(
+        'loanApplication:',
+        JSON.stringify(bh.local.loanApplication, null, 2)
+      );
       this.tracerService.sendData(spanInst, bh);
-      bh = await this.sd_CNKH3aMFT8xOsBjr(bh, parentSpanInst);
+      bh = await this.sd_kuu9RgLV0lbtFJwa(bh, parentSpanInst);
       //appendnew_next_prepareSaveDraftRequest
       return bh;
     } catch (e) {
@@ -331,7 +378,650 @@ export class loan_business_service {
     }
   }
 
+  async sd_kuu9RgLV0lbtFJwa(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'sd_kuu9RgLV0lbtFJwa',
+      parentSpanInst
+    );
+    try {
+      if (
+        this.sdService.operators['eq'](
+          bh.local.isExistingDraft,
+          'false',
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.prepareCreateDraft(bh, parentSpanInst);
+      } else if (
+        this.sdService.operators['eq'](
+          bh.local.isExistingDraft,
+          'true',
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.prepareUpdateDraft(bh, parentSpanInst);
+      }
+      this.tracerService.sendData(spanInst, bh);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_kuu9RgLV0lbtFJwa',
+        spanInst,
+        'sd_kuu9RgLV0lbtFJwa'
+      );
+    }
+  }
+
+  async prepareCreateDraft(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'prepareCreateDraft',
+      parentSpanInst
+    );
+    try {
+      const loan = bh.local.loanApplication;
+
+      const applicationId = loan.application_id || crypto.randomUUID();
+
+      bh.local.createRequest = {
+        loan_application: {
+          application_id: applicationId,
+
+          // Draft does not have application number yet
+          application_number: '',
+
+          customer_name: loan.customer_name || '',
+          dob: loan.dob || null,
+          gender: loan.gender || '',
+          mobile: loan.mobile || '',
+          email: loan.email || '',
+          address: loan.address || '',
+
+          employment_type: loan.employment_type || '',
+          employer_name: loan.employer_name || '',
+          monthly_income: Number(loan.monthly_income || 0),
+
+          loan_type: loan.loan_type || '',
+          loan_amount: Number(loan.loan_amount || 0),
+          loan_tenure: Number(loan.loan_tenure || 0),
+
+          purpose: loan.purpose || '',
+
+          credit_score: Number(loan.credit_score || 0),
+          risk_category: loan.risk_category || '',
+          emi: Number(loan.emi || 0),
+
+          status: 'DRAFT',
+
+          loan_account_number: '',
+          remarks: '',
+          created_date: new Date().toISOString(),
+
+          decision: '',
+
+          interest_rate: Number(loan.interest_rate || 0),
+        },
+      };
+
+      console.log('===== CREATE DRAFT REQUEST =====');
+      console.log(JSON.stringify(bh.local.createRequest, null, 2));
+      this.tracerService.sendData(spanInst, bh);
+      bh = await this.sd_L1fBpjKKr49xBt2R(bh, parentSpanInst);
+      //appendnew_next_prepareCreateDraft
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_i2i5UinL8ILzSNXp',
+        spanInst,
+        'prepareCreateDraft'
+      );
+    }
+  }
+
+  async sd_L1fBpjKKr49xBt2R(bh, parentSpanInst) {
+    try {
+      let requestOptions: any = {
+        url: 'https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create',
+        timeout: 30000,
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        followRedirects: true,
+        cookies: undefined,
+        authType: undefined,
+        body: bh.local.createRequest,
+        paytoqs: false,
+        proxyConfig: undefined,
+        tlsConfig: undefined,
+        ret: 'json',
+        params: {},
+        username: undefined,
+        password: undefined,
+        token: undefined,
+        useQuerystring: false,
+      };
+      requestOptions.rejectUnauthorized = false;
+      requestOptions.tlsConfig = undefined;
+      requestOptions.proxyConfig = undefined;
+      let responseMsg: any = await this.sdService.httpRequest(
+        requestOptions.url,
+        requestOptions.timeout,
+        requestOptions.method,
+        requestOptions.headers,
+        requestOptions.followRedirects,
+        requestOptions.cookies,
+        requestOptions.authType,
+        requestOptions.body,
+        requestOptions.paytoqs,
+        requestOptions.proxyConfig,
+        requestOptions.tlsConfig,
+        requestOptions.ret,
+        requestOptions.params,
+        requestOptions.rejectUnauthorized,
+        requestOptions.username,
+        requestOptions.password,
+        requestOptions.token
+      );
+
+      bh.local.createResponse = responseMsg;
+      bh = await this.prepareResponse(bh, parentSpanInst);
+      //appendnew_next_sd_L1fBpjKKr49xBt2R
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_L1fBpjKKr49xBt2R');
+    }
+  }
+
+  async prepareResponse(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'prepareResponse',
+      parentSpanInst
+    );
+    try {
+      // bh.local.response = {
+      //     success: true,
+      //     message: "Loan saved successfully",
+      //     data: bh.local.updateResponse
+      // };
+
+      // console.log("===== CRUD RESPONSE =====");
+      // console.log(JSON.stringify(bh.local.updateResponse, null, 2));
+
+      // bh.local.output = {
+      //     success: true,
+      //     data: bh.local.updateResponse
+      // };
+
+      let response;
+
+      if (bh.local.createResponse) {
+        response = bh.local.createResponse;
+      } else {
+        response = bh.local.updateResponse;
+      }
+
+      console.log('===== CRUD RESPONSE =====');
+
+      console.log(JSON.stringify(response, null, 2));
+
+      bh.local.output = {
+        success: true,
+        message: 'Draft saved successfully',
+        data: response,
+      };
+      this.tracerService.sendData(spanInst, bh);
+      await this.sd_18gFPQjmlB2MGN54(bh, parentSpanInst);
+      //appendnew_next_prepareResponse
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_yfgyIEQfSCseFnYp',
+        spanInst,
+        'prepareResponse'
+      );
+    }
+  }
+
+  async sd_18gFPQjmlB2MGN54(bh, parentSpanInst) {
+    try {
+      bh.web.res.status(200).send(bh.local.output);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_18gFPQjmlB2MGN54');
+    }
+  }
+
+  async prepareUpdateDraft(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'prepareUpdateDraft',
+      parentSpanInst
+    );
+    try {
+      const loan = bh.local.loanApplication;
+
+      bh.local.updateRequest = {
+        loan_application: {
+          ...loan,
+
+          status: 'DRAFT',
+        },
+      };
+
+      console.log('===== UPDATE DRAFT REQUEST =====');
+
+      console.log(JSON.stringify(bh.local.updateRequest, null, 2));
+      this.tracerService.sendData(spanInst, bh);
+      bh = await this.sd_CNKH3aMFT8xOsBjr(bh, parentSpanInst);
+      //appendnew_next_prepareUpdateDraft
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_6DwIkIsqPF8Fu6oK',
+        spanInst,
+        'prepareUpdateDraft'
+      );
+    }
+  }
+
   async sd_CNKH3aMFT8xOsBjr(bh, parentSpanInst) {
+    try {
+      let requestOptions: any = {
+        url: 'https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id',
+        timeout: 30000,
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        followRedirects: true,
+        cookies: undefined,
+        authType: undefined,
+        body: bh.local.updateRequest,
+        paytoqs: false,
+        proxyConfig: undefined,
+        tlsConfig: undefined,
+        ret: 'json',
+        params: {},
+        username: undefined,
+        password: undefined,
+        token: undefined,
+        useQuerystring: false,
+      };
+      requestOptions.rejectUnauthorized = false;
+      requestOptions.tlsConfig = undefined;
+      requestOptions.proxyConfig = undefined;
+      let responseMsg: any = await this.sdService.httpRequest(
+        requestOptions.url,
+        requestOptions.timeout,
+        requestOptions.method,
+        requestOptions.headers,
+        requestOptions.followRedirects,
+        requestOptions.cookies,
+        requestOptions.authType,
+        requestOptions.body,
+        requestOptions.paytoqs,
+        requestOptions.proxyConfig,
+        requestOptions.tlsConfig,
+        requestOptions.ret,
+        requestOptions.params,
+        requestOptions.rejectUnauthorized,
+        requestOptions.username,
+        requestOptions.password,
+        requestOptions.token
+      );
+
+      bh.local.updateResponse = responseMsg;
+      bh = await this.prepareResponse(bh, parentSpanInst);
+      //appendnew_next_sd_CNKH3aMFT8xOsBjr
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_CNKH3aMFT8xOsBjr');
+    }
+  }
+
+  async sd_kO8gj7QgAnW5sg73(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'sd_kO8gj7QgAnW5sg73',
+      parentSpanInst
+    );
+    try {
+      const req = bh.input.body;
+
+      console.log('===== SUBMIT INPUT =====');
+      console.log(JSON.stringify(req, null, 2));
+
+      const existingApplicationId = req.application_id;
+
+      const hasApplicationId =
+        existingApplicationId !== undefined &&
+        existingApplicationId !== null &&
+        existingApplicationId !== '';
+
+      console.log('Existing application_id:', existingApplicationId);
+      console.log('hasApplicationId:', hasApplicationId);
+
+      if (hasApplicationId) {
+        // =========================
+        // UPDATE EXISTING DRAFT
+        // =========================
+
+        bh.local.submitType = 'UPDATE';
+
+        bh.local.loanApplication = {
+          application_id: req.application_id,
+          application_number: req.application_number || '',
+          customer_name: req.customer_name || '',
+          dob: req.dob || null,
+          gender: req.gender || '',
+          mobile: req.mobile || '',
+          email: req.email || '',
+          address: req.address || '',
+          employment_type: req.employment_type || '',
+          employer_name: req.employer_name || '',
+          monthly_income: req.monthly_income || 0,
+          loan_type: req.loan_type || '',
+          loan_amount: req.loan_amount || 0,
+          loan_tenure: req.loan_tenure || 0,
+          purpose: req.purpose || '',
+          credit_score: req.credit_score || 0,
+          risk_category: req.risk_category || '',
+          emi: req.emi || 0,
+          status: 'SUBMITTED',
+          loan_account_number: req.loan_account_number || '',
+          remarks: req.remarks || '',
+          created_date: req.created_date || new Date().toISOString(),
+          decision: req.decision || '',
+          interest_rate: req.interest_rate || 0,
+        };
+
+        // Generate application number if existing draft doesn't have one
+        if (!bh.local.loanApplication.application_number) {
+          bh.local.loanApplication.application_number =
+            'APP' + Math.floor(10000000 + Math.random() * 90000000);
+        }
+      } else {
+        // =========================
+        // DIRECT SUBMIT
+        // =========================
+
+        bh.local.submitType = 'CREATE';
+
+        const applicationId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+          /[xy]/g,
+          function (c) {
+            const r = (Math.random() * 16) | 0;
+            const v = c === 'x' ? r : (r & 0x3) | 0x8;
+
+            return v.toString(16);
+          }
+        );
+
+        const applicationNumber =
+          'APP' + Math.floor(10000000 + Math.random() * 90000000);
+
+        bh.local.loanApplication = {
+          application_id: applicationId,
+          application_number: applicationNumber,
+
+          customer_name: req.customer_name || '',
+          dob: req.dob || null,
+          gender: req.gender || '',
+          mobile: req.mobile || '',
+
+          email: req.email || '',
+          address: req.address || '',
+
+          employment_type: req.employment_type || '',
+          employer_name: req.employer_name || '',
+          monthly_income: req.monthly_income || 0,
+
+          loan_type: req.loan_type || '',
+          loan_amount: req.loan_amount || 0,
+          loan_tenure: req.loan_tenure || 0,
+          purpose: req.purpose || '',
+
+          credit_score: req.credit_score || 0,
+          risk_category: req.risk_category || '',
+          emi: req.emi || 0,
+
+          status: 'SUBMITTED',
+
+          loan_account_number: req.loan_account_number || '',
+          remarks: req.remarks || '',
+
+          created_date: new Date().toISOString(),
+
+          decision: req.decision || '',
+          interest_rate: req.interest_rate || 0,
+        };
+      }
+
+      console.log('===== SUBMIT TYPE =====');
+      console.log(bh.local.submitType);
+
+      console.log('===== SUBMIT APPLICATION =====');
+      console.log(JSON.stringify(bh.local.loanApplication, null, 2));
+      this.tracerService.sendData(spanInst, bh);
+      bh = await this.sd_woLlOtrkQMZJ7qC1(bh, parentSpanInst);
+      //appendnew_next_sd_kO8gj7QgAnW5sg73
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_kO8gj7QgAnW5sg73',
+        spanInst,
+        'sd_kO8gj7QgAnW5sg73'
+      );
+    }
+  }
+
+  async sd_woLlOtrkQMZJ7qC1(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'sd_woLlOtrkQMZJ7qC1',
+      parentSpanInst
+    );
+    try {
+      if (
+        this.sdService.operators['eq'](
+          bh.local.submitType,
+          'CREATE',
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.createResponse(bh, parentSpanInst);
+      } else if (
+        this.sdService.operators['eq'](
+          bh.local.submitType,
+          'UPDATE',
+          undefined,
+          undefined
+        )
+      ) {
+        bh = await this.prepareUpdateRequest(bh, parentSpanInst);
+      }
+      this.tracerService.sendData(spanInst, bh);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_woLlOtrkQMZJ7qC1',
+        spanInst,
+        'sd_woLlOtrkQMZJ7qC1'
+      );
+    }
+  }
+
+  async createResponse(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'createResponse',
+      parentSpanInst
+    );
+    try {
+      bh.local.requestBody = {
+        loan_application: bh.local.loanApplication,
+      };
+
+      console.log('===== CREATE REQUEST =====');
+      console.log(JSON.stringify(bh.local.requestBody, null, 2));
+
+      this.tracerService.sendData(spanInst, bh);
+      bh = await this.create(bh, parentSpanInst);
+      //appendnew_next_createResponse
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_jHhyoqyB0ettMTi7',
+        spanInst,
+        'createResponse'
+      );
+    }
+  }
+
+  async create(bh, parentSpanInst) {
+    try {
+      let requestOptions: any = {
+        url: 'https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create',
+        timeout: 30000,
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        followRedirects: true,
+        cookies: undefined,
+        authType: undefined,
+        body: bh.local.requestBody,
+        paytoqs: false,
+        proxyConfig: undefined,
+        tlsConfig: undefined,
+        ret: 'json',
+        params: {},
+        username: undefined,
+        password: undefined,
+        token: undefined,
+        useQuerystring: false,
+      };
+      requestOptions.rejectUnauthorized = false;
+      requestOptions.tlsConfig = undefined;
+      requestOptions.proxyConfig = undefined;
+      let responseMsg: any = await this.sdService.httpRequest(
+        requestOptions.url,
+        requestOptions.timeout,
+        requestOptions.method,
+        requestOptions.headers,
+        requestOptions.followRedirects,
+        requestOptions.cookies,
+        requestOptions.authType,
+        requestOptions.body,
+        requestOptions.paytoqs,
+        requestOptions.proxyConfig,
+        requestOptions.tlsConfig,
+        requestOptions.ret,
+        requestOptions.params,
+        requestOptions.rejectUnauthorized,
+        requestOptions.username,
+        requestOptions.password,
+        requestOptions.token
+      );
+
+      bh.local.createResponse = responseMsg;
+      bh = await this.sd_cmXC2P6KdsmgnkiP(bh, parentSpanInst);
+      //appendnew_next_create
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_ljJd9jb53GTcCNEr');
+    }
+  }
+
+  async sd_cmXC2P6KdsmgnkiP(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'sd_cmXC2P6KdsmgnkiP',
+      parentSpanInst
+    );
+    try {
+      console.log('===== SUBMIT SUCCESS =====');
+
+      bh.local.output = {
+        success: true,
+        message: 'Loan submitted successfully.',
+        application_id: bh.local.loanApplication.application_id,
+        application_number: bh.local.loanApplication.application_number,
+        status: 'SUBMITTED',
+        data: bh.local.loanApplication,
+      };
+
+      console.log(JSON.stringify(bh.local.output, null, 2));
+      this.tracerService.sendData(spanInst, bh);
+      await this.sd_YUiD7IkAkwWZTRyM(bh, parentSpanInst);
+      //appendnew_next_sd_cmXC2P6KdsmgnkiP
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_cmXC2P6KdsmgnkiP',
+        spanInst,
+        'sd_cmXC2P6KdsmgnkiP'
+      );
+    }
+  }
+
+  async sd_YUiD7IkAkwWZTRyM(bh, parentSpanInst) {
+    try {
+      bh.web.res.status(200).send(bh.local.output);
+
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_YUiD7IkAkwWZTRyM');
+    }
+  }
+
+  async prepareUpdateRequest(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'prepareUpdateRequest',
+      parentSpanInst
+    );
+    try {
+      console.log('===== UPDATE BRANCH STARTED =====');
+
+      console.log(
+        'Loan Application:',
+        JSON.stringify(bh.local.loanApplication, null, 2)
+      );
+
+      bh.local.requestBody = {
+        loan_application: bh.local.loanApplication,
+      };
+
+      console.log('===== UPDATE REQUEST BODY =====');
+
+      console.log(JSON.stringify(bh.local.requestBody, null, 2));
+      this.tracerService.sendData(spanInst, bh);
+      bh = await this.sd_0EvC0nKvOQkt1i9j(bh, parentSpanInst);
+      //appendnew_next_prepareUpdateRequest
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_FwPhq6bQMIonTs9C',
+        spanInst,
+        'prepareUpdateRequest'
+      );
+    }
+  }
+
+  async sd_0EvC0nKvOQkt1i9j(bh, parentSpanInst) {
     try {
       let requestOptions: any = {
         url: 'https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id',
@@ -376,178 +1066,11 @@ export class loan_business_service {
       );
 
       bh.local.updateResponse = responseMsg;
-      bh = await this.prepareResponse(bh, parentSpanInst);
-      //appendnew_next_sd_CNKH3aMFT8xOsBjr
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_CNKH3aMFT8xOsBjr');
-    }
-  }
-
-  async prepareResponse(bh, parentSpanInst) {
-    const spanInst = this.tracerService.createSpan(
-      'prepareResponse',
-      parentSpanInst
-    );
-    try {
-      // bh.local.response = {
-      //     success: true,
-      //     message: "Loan saved successfully",
-      //     data: bh.local.updateResponse
-      // };
-
-      console.log('===== CRUD RESPONSE =====');
-      console.log(JSON.stringify(bh.local.updateResponse, null, 2));
-
-      bh.local.output = {
-        success: true,
-        data: bh.local.updateResponse,
-      };
-      this.tracerService.sendData(spanInst, bh);
-      await this.sd_18gFPQjmlB2MGN54(bh, parentSpanInst);
-      //appendnew_next_prepareResponse
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(
-        bh,
-        e,
-        'sd_yfgyIEQfSCseFnYp',
-        spanInst,
-        'prepareResponse'
-      );
-    }
-  }
-
-  async sd_18gFPQjmlB2MGN54(bh, parentSpanInst) {
-    try {
-      bh.web.res.status(200).send(bh.local.output);
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_18gFPQjmlB2MGN54');
-    }
-  }
-
-  async sd_kO8gj7QgAnW5sg73(bh, parentSpanInst) {
-    const spanInst = this.tracerService.createSpan(
-      'sd_kO8gj7QgAnW5sg73',
-      parentSpanInst
-    );
-    try {
-      console.log('Body:', JSON.stringify(bh.input.body, null, 2));
-
-      const loan = bh.input.body.loan_application || bh.input.body;
-
-      if (!loan) {
-        throw new Error('Loan object not found in request.');
-      }
-
-      loan.status = 'Submitted';
-
-      bh.local.requestBody = {
-        loan_application: loan,
-      };
-      this.tracerService.sendData(spanInst, bh);
-      bh = await this.sd_0EvC0nKvOQkt1i9j(bh, parentSpanInst);
-      //appendnew_next_sd_kO8gj7QgAnW5sg73
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(
-        bh,
-        e,
-        'sd_kO8gj7QgAnW5sg73',
-        spanInst,
-        'sd_kO8gj7QgAnW5sg73'
-      );
-    }
-  }
-
-  async sd_0EvC0nKvOQkt1i9j(bh, parentSpanInst) {
-    try {
-      let requestOptions: any = {
-        url: 'https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id',
-        timeout: 30000,
-        method: 'post',
-        headers: {},
-        followRedirects: true,
-        cookies: undefined,
-        authType: undefined,
-        body: bh.local.requestBody,
-        paytoqs: false,
-        proxyConfig: undefined,
-        tlsConfig: undefined,
-        ret: 'json',
-        params: {},
-        username: undefined,
-        password: undefined,
-        token: undefined,
-        useQuerystring: false,
-      };
-      requestOptions.rejectUnauthorized = false;
-      requestOptions.tlsConfig = undefined;
-      requestOptions.proxyConfig = undefined;
-      let responseMsg: any = await this.sdService.httpRequest(
-        requestOptions.url,
-        requestOptions.timeout,
-        requestOptions.method,
-        requestOptions.headers,
-        requestOptions.followRedirects,
-        requestOptions.cookies,
-        requestOptions.authType,
-        requestOptions.body,
-        requestOptions.paytoqs,
-        requestOptions.proxyConfig,
-        requestOptions.tlsConfig,
-        requestOptions.ret,
-        requestOptions.params,
-        requestOptions.rejectUnauthorized,
-        requestOptions.username,
-        requestOptions.password,
-        requestOptions.token
-      );
-
-      bh.responce = responseMsg;
       bh = await this.sd_cmXC2P6KdsmgnkiP(bh, parentSpanInst);
       //appendnew_next_sd_0EvC0nKvOQkt1i9j
       return bh;
     } catch (e) {
       return await this.errorHandler(bh, e, 'sd_0EvC0nKvOQkt1i9j');
-    }
-  }
-
-  async sd_cmXC2P6KdsmgnkiP(bh, parentSpanInst) {
-    const spanInst = this.tracerService.createSpan(
-      'sd_cmXC2P6KdsmgnkiP',
-      parentSpanInst
-    );
-    try {
-      bh.local.output = {
-        success: true,
-        message: 'Loan submitted successfully.',
-        data: bh.local.response,
-      };
-      this.tracerService.sendData(spanInst, bh);
-      await this.sd_YUiD7IkAkwWZTRyM(bh, parentSpanInst);
-      //appendnew_next_sd_cmXC2P6KdsmgnkiP
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(
-        bh,
-        e,
-        'sd_cmXC2P6KdsmgnkiP',
-        spanInst,
-        'sd_cmXC2P6KdsmgnkiP'
-      );
-    }
-  }
-
-  async sd_YUiD7IkAkwWZTRyM(bh, parentSpanInst) {
-    try {
-      bh.web.res.status(200).send(bh.local.output);
-
-      return bh;
-    } catch (e) {
-      return await this.errorHandler(bh, e, 'sd_YUiD7IkAkwWZTRyM');
     }
   }
 
@@ -572,11 +1095,40 @@ export class loan_business_service {
       //     loan_application: loan
       // };
 
+      // const loan = bh.input.body.loan_application;
+      // console.log("Incoming Body:=================");
+      // console.log(JSON.stringify(bh.input.body, null, 2));
+      // const decision = loan.decision;
+      // const remarks = loan.remarks;
+
+      // if (decision === "APPROVE") {
+
+      //     loan.status = "Loan Officer Approved";
+
+      // } else {
+
+      //     loan.status = "Loan Officer Rejected";
+
+      // }
+
+      // loan.remarks = remarks;
+      // loan.decision = decision;
+
+      // bh.local.requestBody = {
+      //     loan_application: loan
+      // };
+
       const loan = bh.input.body.loan_application;
-      console.log('Incoming Body:=================');
-      console.log(JSON.stringify(bh.input.body, null, 2));
+
+      if (!loan) {
+        throw new Error('loan_application is required');
+      }
+
       const decision = loan.decision;
-      const remarks = loan.remarks;
+
+      if (decision !== 'APPROVE' && decision !== 'REJECT') {
+        throw new Error('Decision must be APPROVE or REJECT');
+      }
 
       if (decision === 'APPROVE') {
         loan.status = 'Loan Officer Approved';
@@ -584,12 +1136,12 @@ export class loan_business_service {
         loan.status = 'Loan Officer Rejected';
       }
 
-      loan.remarks = remarks;
-      loan.decision = decision;
-
       bh.local.requestBody = {
         loan_application: loan,
       };
+
+      console.log('===== LOAN OFFICER UPDATE =====');
+      console.log(JSON.stringify(bh.local.requestBody, null, 2));
       this.tracerService.sendData(spanInst, bh);
       bh = await this.sd_tA8LJ98dsZsz6rzd(bh, parentSpanInst);
       //appendnew_next_prepareLoanOfficerReviewScript
@@ -702,20 +1254,71 @@ export class loan_business_service {
       parentSpanInst
     );
     try {
+      // const loan = bh.input.body.loan_application;
+
+      // // Business Rule:
+      // // Loan amount can be changed only when credit score < 80
+
+      // if (loan.credit_score < 80) {
+
+      //     console.log("Loan Amount can be modified.");
+
+      // } else {
+
+      //     console.log("Loan Amount cannot be modified.");
+
+      // }
+
+      // // Approval Decision
+
+      // if (loan.decision === "APPROVE") {
+
+      //     loan.status = "Credit Manager Approved";
+
+      // } else {
+
+      //     loan.status = "Credit Manager Rejected";
+
+      // }
+
+      // bh.local.requestBody = {
+      //     loan_application: loan
+      // };
       const loan = bh.input.body.loan_application;
 
-      // Business Rule:
-      // Loan amount can be changed only when credit score < 80
-
-      if (loan.credit_score < 80) {
-        console.log('Loan Amount can be modified.');
-      } else {
-        console.log('Loan Amount cannot be modified.');
+      if (!loan) {
+        throw new Error('loan_application is required');
       }
 
-      // Approval Decision
+      const decision = loan.decision;
 
-      if (loan.decision === 'APPROVE') {
+      if (decision !== 'APPROVE' && decision !== 'REJECT') {
+        throw new Error('Decision must be APPROVE or REJECT');
+      }
+
+      if (loan.risk_score === undefined || loan.risk_score === null) {
+        throw new Error('risk_score is required');
+      }
+
+      const riskScore = Number(loan.risk_score);
+
+      if (Number.isNaN(riskScore)) {
+        throw new Error('risk_score must be a valid number');
+      }
+
+      // Risk Score < 80 means Loan Amount can be modified
+      if (riskScore < 80) {
+        loan.remarks =
+          loan.remarks ||
+          'Risk Score is below 80. Loan amount modification is allowed.';
+      } else {
+        loan.remarks =
+          loan.remarks ||
+          'Risk Score is 80 or above. Loan amount modification is not allowed.';
+      }
+
+      // Credit Manager Approval / Rejection
+      if (decision === 'APPROVE') {
         loan.status = 'Credit Manager Approved';
       } else {
         loan.status = 'Credit Manager Rejected';
@@ -724,6 +1327,9 @@ export class loan_business_service {
       bh.local.requestBody = {
         loan_application: loan,
       };
+
+      console.log('===== CREDIT MANAGER UPDATE =====');
+      console.log(JSON.stringify(bh.local.requestBody, null, 2));
       this.tracerService.sendData(spanInst, bh);
       bh = await this.sd_XwdL8LsH4sMkXtVH(bh, parentSpanInst);
       //appendnew_next_sd_vA2jw72BfcZOk0Vn
@@ -747,7 +1353,7 @@ export class loan_business_service {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.requestBody,
         paytoqs: false,
@@ -801,7 +1407,7 @@ export class loan_business_service {
       bh.local.output = {
         success: true,
 
-        message: 'Credit Manager Approval completed successfully.',
+        message: 'Credit Manager review completed successfully.',
 
         data: bh.local.updateResponse,
       };
@@ -836,18 +1442,139 @@ export class loan_business_service {
       parentSpanInst
     );
     try {
-      console.log('===== Generate Loan Account =====');
+      // // console.log("===== Generate Loan Account =====");
+
+      // // const loan = bh.input.body.loan_application;
+
+      // // console.log("Incoming Loan:");
+      // // console.log(JSON.stringify(loan, null, 2));
+
+      // // bh.local.loan = loan;
+
+      // // if (loan.decision === "APPROVE") {
+
+      // //     console.log("Loan Approved.");
+
+      // //     const accountNumber =
+      // //         "LN" +
+      // //         new Date().getFullYear() +
+      // //         Math.floor(100000 + Math.random() * 900000);
+
+      // //     loan.loan_account_number = accountNumber;
+      // //     loan.status = "Disbursed";
+      // //     loan.remarks = "Loan Account Generated";
+
+      // //     bh.local.requestBody = {
+      // //         loan_application: loan
+      // //     };
+
+      // //     bh.local.route = "APPROVE";
+
+      // // } else {
+
+      // //     console.log("Loan Rejected.");
+
+      // //     bh.local.route = "REJECT";
+      // // }
+
+      // console.log("===== GENERATE LOAN ACCOUNT =====");
+
+      // const loan = bh.input.body.loan_application;
+
+      // if (!loan) {
+      //     throw new Error("loan_application is required");
+      // }
+
+      // console.log("===== INCOMING LOAN =====");
+      // console.log(JSON.stringify(loan, null, 2));
+
+      // bh.local.loan = loan;
+
+      // if (loan.decision === "APPROVE") {
+
+      //     console.log("Loan Approved.");
+
+      //     const accountNumber =
+      //         "LN" +
+      //         new Date().getFullYear() +
+      //         Math.floor(100000 + Math.random() * 900000);
+
+      //     loan.loan_account_number = accountNumber;
+      //     loan.status = "Disbursed";
+      //     loan.remarks = "Loan Account Generated";
+
+      //     /*
+      //      * Prepare complete DB object
+      //      */
+      //     bh.local.requestBody = {
+      //         loan_application: {
+      //             application_id: loan.application_id,
+      //             application_number: loan.application_number,
+
+      //             customer_name: loan.customer_name || "",
+      //             dob: loan.dob || null,
+      //             gender: loan.gender || "",
+      //             mobile: loan.mobile || "",
+
+      //             email: loan.email || "",
+      //             address: loan.address || "",
+
+      //             employment_type: loan.employment_type || "",
+      //             employer_name: loan.employer_name || "",
+      //             monthly_income: loan.monthly_income || 0,
+
+      //             loan_type: loan.loan_type || "",
+      //             loan_amount: loan.loan_amount || 0,
+      //             loan_tenure: loan.loan_tenure || 0,
+      //             purpose: loan.purpose || "",
+
+      //             credit_score: loan.credit_score || 0,
+      //             risk_category: loan.risk_category || "",
+      //             emi: loan.emi || 0,
+
+      //             status: "Disbursed",
+
+      //             loan_account_number: accountNumber,
+
+      //             remarks: "Loan Account Generated",
+
+      //             created_date: loan.created_date || new Date().toISOString(),
+
+      //             decision: loan.decision || "",
+
+      //             interest_rate: loan.interest_rate || 0
+      //         }
+      //     };
+
+      //     bh.local.route = "APPROVE";
+
+      //     console.log("===== UPDATE REQUEST BODY =====");
+      //     console.log(
+      //         JSON.stringify(bh.local.requestBody, null, 2)
+      //     );
+
+      // } else {
+
+      //     console.log("Loan Rejected.");
+
+      //     bh.local.route = "REJECT";
+      // }
 
       const loan = bh.input.body.loan_application;
 
-      console.log('Incoming Loan:');
-      console.log(JSON.stringify(loan, null, 2));
+      if (!loan) {
+        throw new Error('loan_application is required');
+      }
 
-      bh.local.loan = loan;
+      if (!loan.application_id) {
+        throw new Error('application_id is required');
+      }
+
+      if (!loan.application_number) {
+        throw new Error('application_number is required');
+      }
 
       if (loan.decision === 'APPROVE') {
-        console.log('Loan Approved.');
-
         const accountNumber =
           'LN' +
           new Date().getFullYear() +
@@ -863,10 +1590,12 @@ export class loan_business_service {
 
         bh.local.route = 'APPROVE';
       } else {
-        console.log('Loan Rejected.');
-
+        bh.local.loan = loan;
         bh.local.route = 'REJECT';
       }
+
+      console.log('===== GENERATE ACCOUNT REQUEST =====');
+      console.log(JSON.stringify(bh.local.requestBody, null, 2));
       this.tracerService.sendData(spanInst, bh);
       bh = await this.sd_PCLoVn1tIEi6NDCh(bh, parentSpanInst);
       //appendnew_next_sd_3WxhGiR8VvuVFHuc
@@ -929,7 +1658,7 @@ export class loan_business_service {
         method: 'post',
         headers: {},
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.requestBody,
         paytoqs: false,
@@ -980,18 +1709,41 @@ export class loan_business_service {
       parentSpanInst
     );
     try {
-      console.log('Database Updated Successfully');
+      // console.log("Database Updated Successfully");
+
+      // bh.local.output = {
+
+      //     success: true,
+
+      //     message: "Loan Account generated successfully.",
+
+      //     loanAccountNumber:
+      //         bh.local.requestBody.loan_application.loan_account_number,
+
+      //     data: bh.input
+      // };
+
+      console.log('===== DATABASE UPDATE SUCCESS =====');
 
       bh.local.output = {
         success: true,
 
         message: 'Loan Account generated successfully.',
 
-        loanAccountNumber:
+        application_id: bh.local.requestBody.loan_application.application_id,
+
+        application_number:
+          bh.local.requestBody.loan_application.application_number,
+
+        loan_account_number:
           bh.local.requestBody.loan_application.loan_account_number,
 
-        data: bh.input,
+        status: bh.local.requestBody.loan_application.status,
+
+        data: bh.local.updateResponse,
       };
+
+      console.log(JSON.stringify(bh.local.output, null, 2));
       this.tracerService.sendData(spanInst, bh);
       await this.sd_4qgEW6arJBBwQp65(bh, parentSpanInst);
       //appendnew_next_sd_ZmaXtBvYMpkwza1S
@@ -1122,7 +1874,7 @@ export class loan_business_service {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.requestBody,
         paytoqs: false,
