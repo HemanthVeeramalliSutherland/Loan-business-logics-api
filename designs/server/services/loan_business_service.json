@@ -30,6 +30,7 @@
         "acceptFileUpload": false,
         "useDataModel": false,
         "dataModelIsArray": false,
+        "uploadFileOptions": "",
         "erd": "",
         "erdName": "",
         "entity": "",
@@ -149,6 +150,7 @@
         "nodeType": "flow",
         "name": "",
         "method": "post",
+        "methodMapping": "",
         "methodMappingObj": {},
         "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
@@ -156,6 +158,7 @@
             "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
+        "retMapping": "",
         "retMappingObj": {},
         "reqBody": "bh.local.updateRequest",
         "reqBodyObj": {
@@ -176,11 +179,16 @@
                 "defaultValue": "application/json"
             }
         ],
+        "headerMapping": "",
         "headerMappingObj": {},
         "params": {},
         "paramsObj": [],
+        "paramMapping": "",
         "paramMappingObj": {},
+        "authType": "",
         "useAuthTypeMappingObj": {},
+        "useAuthTypeMap": {},
+        "useAuthType": "",
         "useAuthUsername": "",
         "useAuthUsernameMappingObj": "",
         "useAuthPassword": "",
@@ -196,6 +204,7 @@
         "proxy": "",
         "useProxy": false,
         "usetls": false,
+        "cookies": [],
         "cookiesMapObj": {},
         "cookiesList": {},
         "switchStates": {
@@ -261,6 +270,7 @@
         "acceptFileUpload": false,
         "useDataModel": false,
         "dataModelIsArray": false,
+        "uploadFileOptions": "",
         "erd": "",
         "erdName": "",
         "entity": "",
@@ -323,6 +333,7 @@
             "send": "bh.local.output"
         },
         "dataModelIsArray": false,
+        "cookies": [],
         "inputs": 1,
         "outputs": 0,
         "erd": "",
@@ -357,6 +368,7 @@
         "nodeType": "flow",
         "name": "",
         "method": "post",
+        "methodMapping": "",
         "methodMappingObj": {},
         "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
@@ -364,6 +376,7 @@
             "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
+        "retMapping": "",
         "retMappingObj": {},
         "reqBody": "bh.local.requestBody",
         "reqBodyObj": {
@@ -384,11 +397,16 @@
                 "defaultValue": "application/json"
             }
         ],
+        "headerMapping": "",
         "headerMappingObj": {},
         "params": {},
         "paramsObj": [],
+        "paramMapping": "",
         "paramMappingObj": {},
+        "authType": "",
         "useAuthTypeMappingObj": {},
+        "useAuthTypeMap": {},
+        "useAuthType": "",
         "useAuthUsername": "",
         "useAuthUsernameMappingObj": "",
         "useAuthPassword": "",
@@ -404,6 +422,7 @@
         "proxy": "",
         "useProxy": false,
         "usetls": false,
+        "cookies": [],
         "cookiesMapObj": {},
         "cookiesList": {},
         "switchStates": {
@@ -435,7 +454,7 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "",
-        "script": "const req = bh.input.body;\n\nconsole.log(\"===== SUBMIT INPUT =====\");\nconsole.log(JSON.stringify(req, null, 2));\n\nconst existingApplicationId = req.application_id;\n\nconst hasApplicationId =\n    existingApplicationId !== undefined &&\n    existingApplicationId !== null &&\n    existingApplicationId !== \"\";\n\nconsole.log(\"Existing application_id:\", existingApplicationId);\nconsole.log(\"hasApplicationId:\", hasApplicationId);\n\nif (hasApplicationId) {\n\n    // =========================\n    // UPDATE EXISTING DRAFT\n    // =========================\n\n    bh.local.submitType = \"UPDATE\";\n\n    bh.local.loanApplication = {\n        application_id: req.application_id,\n        application_number: req.application_number || \"\",\n        customer_name: req.customer_name || \"\",\n        dob: req.dob || null,\n        gender: req.gender || \"\",\n        mobile: req.mobile || \"\",\n        email: req.email || \"\",\n        address: req.address || \"\",\n        employment_type: req.employment_type || \"\",\n        employer_name: req.employer_name || \"\",\n        monthly_income: req.monthly_income || 0,\n        loan_type: req.loan_type || \"\",\n        loan_amount: req.loan_amount || 0,\n        loan_tenure: req.loan_tenure || 0,\n        purpose: req.purpose || \"\",\n        credit_score: req.credit_score || 0,\n        risk_category: req.risk_category || \"\",\n        emi: req.emi || 0,\n        status: \"SUBMITTED\",\n        loan_account_number: req.loan_account_number || \"\",\n        remarks: req.remarks || \"\",\n        created_date: req.created_date || new Date().toISOString(),\n        decision: req.decision || \"\",\n        interest_rate: req.interest_rate || 0\n    };\n\n    // Generate application number if existing draft doesn't have one\n    if (!bh.local.loanApplication.application_number) {\n        bh.local.loanApplication.application_number =\n            \"APP\" + Math.floor(10000000 + Math.random() * 90000000);\n    }\n\n} else {\n\n    // =========================\n    // DIRECT SUBMIT\n    // =========================\n\n    bh.local.submitType = \"CREATE\";\n\n    const applicationId =\n        \"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx\".replace(\n            /[xy]/g,\n            function (c) {\n                const r = Math.random() * 16 | 0;\n                const v = c === \"x\"\n                    ? r\n                    : (r & 0x3 | 0x8);\n\n                return v.toString(16);\n            }\n        );\n\n    const applicationNumber =\n        \"APP\" + Math.floor(10000000 + Math.random() * 90000000);\n\n    bh.local.loanApplication = {\n        application_id: applicationId,\n        application_number: applicationNumber,\n\n        customer_name: req.customer_name || \"\",\n        dob: req.dob || null,\n        gender: req.gender || \"\",\n        mobile: req.mobile || \"\",\n\n        email: req.email || \"\",\n        address: req.address || \"\",\n\n        employment_type: req.employment_type || \"\",\n        employer_name: req.employer_name || \"\",\n        monthly_income: req.monthly_income || 0,\n\n        loan_type: req.loan_type || \"\",\n        loan_amount: req.loan_amount || 0,\n        loan_tenure: req.loan_tenure || 0,\n        purpose: req.purpose || \"\",\n\n        credit_score: req.credit_score || 0,\n        risk_category: req.risk_category || \"\",\n        emi: req.emi || 0,\n\n        status: \"SUBMITTED\",\n\n        loan_account_number: req.loan_account_number || \"\",\n        remarks: req.remarks || \"\",\n\n        created_date: new Date().toISOString(),\n\n        decision: req.decision || \"\",\n        interest_rate: req.interest_rate || 0\n    };\n}\n\nconsole.log(\"===== SUBMIT TYPE =====\");\nconsole.log(bh.local.submitType);\n\nconsole.log(\"===== SUBMIT APPLICATION =====\");\nconsole.log(\n    JSON.stringify(bh.local.loanApplication, null, 2)\n);",
+        "script": "// const req = bh.input.body;\n\n// console.log(\"===== SUBMIT INPUT =====\");\n// console.log(JSON.stringify(req, null, 2));\n\n// const existingApplicationId = req.application_id;\n\n// const hasApplicationId =\n//     existingApplicationId !== undefined &&\n//     existingApplicationId !== null &&\n//     existingApplicationId !== \"\";\n\n// console.log(\"Existing application_id:\", existingApplicationId);\n// console.log(\"hasApplicationId:\", hasApplicationId);\n\n// if (hasApplicationId) {\n\n//     // =========================\n//     // UPDATE EXISTING DRAFT\n//     // =========================\n\n//     bh.local.submitType = \"UPDATE\";\n\n//     bh.local.loanApplication = {\n//         application_id: req.application_id,\n//         application_number: req.application_number || \"\",\n//         customer_name: req.customer_name || \"\",\n//         dob: req.dob || null,\n//         gender: req.gender || \"\",\n//         mobile: req.mobile || \"\",\n//         email: req.email || \"\",\n//         address: req.address || \"\",\n//         employment_type: req.employment_type || \"\",\n//         employer_name: req.employer_name || \"\",\n//         monthly_income: req.monthly_income || 0,\n//         loan_type: req.loan_type || \"\",\n//         loan_amount: req.loan_amount || 0,\n//         loan_tenure: req.loan_tenure || 0,\n//         purpose: req.purpose || \"\",\n//         credit_score: req.credit_score || 0,\n//         risk_category: req.risk_category || \"\",\n//         emi: req.emi || 0,\n//         status: \"SUBMITTED\",\n//         loan_account_number: req.loan_account_number || \"\",\n//         remarks: req.remarks || \"\",\n//         created_date: req.created_date || new Date().toISOString(),\n//         decision: req.decision || \"\",\n//         interest_rate: req.interest_rate || 0\n//     };\n\n//     // Generate application number if existing draft doesn't have one\n//     if (!bh.local.loanApplication.application_number) {\n//         bh.local.loanApplication.application_number =\n//             \"APP\" + Math.floor(10000000 + Math.random() * 90000000);\n//     }\n\n// } else {\n\n//     // =========================\n//     // DIRECT SUBMIT\n//     // =========================\n\n//     bh.local.submitType = \"CREATE\";\n\n//     const applicationId =\n//         \"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx\".replace(\n//             /[xy]/g,\n//             function (c) {\n//                 const r = Math.random() * 16 | 0;\n//                 const v = c === \"x\"\n//                     ? r\n//                     : (r & 0x3 | 0x8);\n\n//                 return v.toString(16);\n//             }\n//         );\n\n//     const applicationNumber =\n//         \"APP\" + Math.floor(10000000 + Math.random() * 90000000);\n\n//     bh.local.loanApplication = {\n//         application_id: applicationId,\n//         application_number: applicationNumber,\n\n//         customer_name: req.customer_name || \"\",\n//         dob: req.dob || null,\n//         gender: req.gender || \"\",\n//         mobile: req.mobile || \"\",\n\n//         email: req.email || \"\",\n//         address: req.address || \"\",\n\n//         employment_type: req.employment_type || \"\",\n//         employer_name: req.employer_name || \"\",\n//         monthly_income: req.monthly_income || 0,\n\n//         loan_type: req.loan_type || \"\",\n//         loan_amount: req.loan_amount || 0,\n//         loan_tenure: req.loan_tenure || 0,\n//         purpose: req.purpose || \"\",\n\n//         credit_score: req.credit_score || 0,\n//         risk_category: req.risk_category || \"\",\n//         emi: req.emi || 0,\n\n//         status: \"SUBMITTED\",\n\n//         loan_account_number: req.loan_account_number || \"\",\n//         remarks: req.remarks || \"\",\n\n//         created_date: new Date().toISOString(),\n\n//         decision: req.decision || \"\",\n//         interest_rate: req.interest_rate || 0\n//     };\n// }\n\n// console.log(\"===== SUBMIT TYPE =====\");\n// console.log(bh.local.submitType);\n\n// console.log(\"===== SUBMIT APPLICATION =====\");\n// console.log(\n//     JSON.stringify(bh.local.loanApplication, null, 2)\n// );\nconst body = bh.input.body;\n\n/*\n * The API request structure is:\n *\n * {\n *   \"loan_application\": {\n *      ...\n *   }\n * }\n */\n\nconst req = body.loan_application || {};\n\nconsole.log(\"===== SUBMIT INPUT =====\");\nconsole.log(JSON.stringify(body, null, 2));\n\nconsole.log(\"===== LOAN APPLICATION INPUT =====\");\nconsole.log(JSON.stringify(req, null, 2));\n\n\n/*\n * ============================================================\n * CHECK EXISTING APPLICATION ID\n * ============================================================\n */\n\nconst existingApplicationId = req.application_id;\n\nconst hasApplicationId =\n    existingApplicationId !== undefined &&\n    existingApplicationId !== null &&\n    String(existingApplicationId).trim() !== \"\";\n\nconsole.log(\n    \"Existing application_id:\",\n    existingApplicationId\n);\n\nconsole.log(\n    \"hasApplicationId:\",\n    hasApplicationId\n);\n\n\n/*\n * ============================================================\n * EXISTING DRAFT / APPLICATION\n * ============================================================\n */\n\nif (hasApplicationId) {\n\n    console.log(\"===== EXISTING APPLICATION =====\");\n    console.log(\n        \"Using existing application_id:\",\n        existingApplicationId\n    );\n\n    bh.local.submitType = \"UPDATE\";\n\n    bh.local.loanApplication = {\n\n        /*\n         * IMPORTANT:\n         * Do NOT generate a new application_id.\n         */\n        application_id: existingApplicationId,\n\n        application_number:\n            req.application_number || \"\",\n\n        customer_name:\n            req.customer_name || \"\",\n\n        dob:\n            req.dob || null,\n\n        gender:\n            req.gender || \"\",\n\n        mobile:\n            req.mobile || \"\",\n\n        email:\n            req.email || \"\",\n\n        address:\n            req.address || \"\",\n\n        employment_type:\n            req.employment_type || \"\",\n\n        employer_name:\n            req.employer_name || \"\",\n\n        monthly_income:\n            req.monthly_income || 0,\n\n        loan_type:\n            req.loan_type || \"\",\n\n        loan_amount:\n            req.loan_amount || 0,\n\n        loan_tenure:\n            req.loan_tenure || 0,\n\n        purpose:\n            req.purpose || \"\",\n\n        credit_score:\n            req.credit_score || 0,\n\n        risk_category:\n            req.risk_category || \"\",\n\n        emi:\n            req.emi || 0,\n\n        status:\n            \"SUBMITTED\",\n\n        loan_account_number:\n            req.loan_account_number || \"\",\n\n        remarks:\n            req.remarks || \"\",\n\n        created_date:\n            req.created_date ||\n            new Date().toISOString(),\n\n        decision:\n            req.decision || \"\",\n\n        interest_rate:\n            req.interest_rate || 0\n    };\n\n\n    /*\n     * Generate application number only if missing.\n     *\n     * DO NOT generate application_id.\n     */\n    if (!bh.local.loanApplication.application_number) {\n\n        bh.local.loanApplication.application_number =\n            \"APP\" +\n            Math.floor(\n                10000000 +\n                Math.random() * 90000000\n            );\n\n        console.log(\n            \"Generated application_number:\",\n            bh.local.loanApplication.application_number\n        );\n    }\n\n\n} else {\n\n    /*\n     * ============================================================\n     * NEW APPLICATION\n     * ============================================================\n     */\n\n    console.log(\"===== NEW APPLICATION =====\");\n    console.log(\n        \"No application_id found.\"\n    );\n\n    console.log(\n        \"Generating new application_id...\"\n    );\n\n    bh.local.submitType = \"CREATE\";\n\n\n    /*\n     * Generate UUID\n     */\n    const applicationId =\n        \"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx\".replace(\n            /[xy]/g,\n            function (c) {\n\n                const r =\n                    Math.random() * 16 | 0;\n\n                const v =\n                    c === \"x\"\n                        ? r\n                        : (r & 0x3 | 0x8);\n\n                return v.toString(16);\n            }\n        );\n\n\n    /*\n     * Generate application number\n     */\n    const applicationNumber =\n        \"APP\" +\n        Math.floor(\n            10000000 +\n            Math.random() * 90000000\n        );\n\n\n    console.log(\n        \"Generated application_id:\",\n        applicationId\n    );\n\n    console.log(\n        \"Generated application_number:\",\n        applicationNumber\n    );\n\n\n    bh.local.loanApplication = {\n\n        application_id:\n            applicationId,\n\n        application_number:\n            applicationNumber,\n\n        customer_name:\n            req.customer_name || \"\",\n\n        dob:\n            req.dob || null,\n\n        gender:\n            req.gender || \"\",\n\n        mobile:\n            req.mobile || \"\",\n\n        email:\n            req.email || \"\",\n\n        address:\n            req.address || \"\",\n\n        employment_type:\n            req.employment_type || \"\",\n\n        employer_name:\n            req.employer_name || \"\",\n\n        monthly_income:\n            req.monthly_income || 0,\n\n        loan_type:\n            req.loan_type || \"\",\n\n        loan_amount:\n            req.loan_amount || 0,\n\n        loan_tenure:\n            req.loan_tenure || 0,\n\n        purpose:\n            req.purpose || \"\",\n\n        credit_score:\n            req.credit_score || 0,\n\n        risk_category:\n            req.risk_category || \"\",\n\n        emi:\n            req.emi || 0,\n\n        status:\n            \"SUBMITTED\",\n\n        loan_account_number:\n            req.loan_account_number || \"\",\n\n        remarks:\n            req.remarks || \"\",\n\n        created_date:\n            new Date().toISOString(),\n\n        decision:\n            req.decision || \"\",\n\n        interest_rate:\n            req.interest_rate || 0\n    };\n}\n\n\n/*\n * ============================================================\n * FINAL LOGS\n * ============================================================\n */\n\nconsole.log(\"===== SUBMIT TYPE =====\");\nconsole.log(\n    bh.local.submitType\n);\n\nconsole.log(\"===== FINAL APPLICATION ID =====\");\nconsole.log(\n    bh.local.loanApplication.application_id\n);\n\nconsole.log(\"===== FINAL APPLICATION NUMBER =====\");\nconsole.log(\n    bh.local.loanApplication.application_number\n);\n\nconsole.log(\"===== SUBMIT APPLICATION =====\");\nconsole.log(\n    JSON.stringify(\n        bh.local.loanApplication,\n        null,\n        2\n    )\n);",
         "functionName": "sd_kO8gj7QgAnW5sg73",
         "category": "Function",
         "x": 430,
@@ -589,6 +608,7 @@
         "nodeType": "flow",
         "name": "",
         "method": "post",
+        "methodMapping": "",
         "methodMappingObj": {},
         "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id\"",
         "urlMappingObj": {
@@ -596,6 +616,7 @@
             "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/update-by-id"
         },
         "ret": "json",
+        "retMapping": "",
         "retMappingObj": {},
         "reqBody": "bh.local.requestBody",
         "reqBodyObj": {
@@ -609,11 +630,16 @@
         },
         "headers": {},
         "headersObj": [],
+        "headerMapping": "",
         "headerMappingObj": {},
         "params": {},
         "paramsObj": [],
+        "paramMapping": "",
         "paramMappingObj": {},
+        "authType": "",
         "useAuthTypeMappingObj": {},
+        "useAuthTypeMap": {},
+        "useAuthType": "",
         "useAuthUsername": "",
         "useAuthUsernameMappingObj": "",
         "useAuthPassword": "",
@@ -629,6 +655,7 @@
         "proxy": "",
         "useProxy": false,
         "usetls": false,
+        "cookies": [],
         "cookiesMapObj": {},
         "cookiesList": {},
         "switchStates": {
@@ -1580,7 +1607,7 @@
         "viewType": "common",
         "nodeType": "flow",
         "name": "PrepareCreateDraft",
-        "script": "const loan = bh.local.loanApplication;\n\nconst applicationId =\n    loan.application_id || crypto.randomUUID();\n\nbh.local.createRequest = {\n    loan_application: {\n        application_id: applicationId,\n\n        // Draft does not have application number yet\n        application_number: \"\",\n\n        customer_name: loan.customer_name || \"\",\n        dob: loan.dob || null,\n        gender: loan.gender || \"\",\n        mobile: loan.mobile || \"\",\n        email: loan.email || \"\",\n        address: loan.address || \"\",\n\n        employment_type: loan.employment_type || \"\",\n        employer_name: loan.employer_name || \"\",\n        monthly_income: Number(loan.monthly_income || 0),\n\n        loan_type: loan.loan_type || \"\",\n        loan_amount: Number(loan.loan_amount || 0),\n        loan_tenure: Number(loan.loan_tenure || 0),\n\n        purpose: loan.purpose || \"\",\n\n        credit_score: Number(loan.credit_score || 0),\n        risk_category: loan.risk_category || \"\",\n        emi: Number(loan.emi || 0),\n\n        status: \"DRAFT\",\n\n        loan_account_number: \"\",\n        remarks: \"\",\n        created_date: new Date().toISOString(),\n\n        decision: \"\",\n\n        interest_rate: Number(loan.interest_rate || 0)\n    }\n};\n\nconsole.log(\"===== CREATE DRAFT REQUEST =====\");\nconsole.log(\n    JSON.stringify(bh.local.createRequest, null, 2)\n);",
+        "script": "const loan = bh.local.loanApplication;\n\nconst applicationId =\n    loan.application_id || crypto.randomUUID();\n\nbh.local.createRequest = {\n    loan_application: {\n        application_id: applicationId,\n\n        customer_name: loan.customer_name || \"\",\n        dob: loan.dob || null,\n        gender: loan.gender || \"\",\n\n        mobile: loan.mobile || \"\",\n        email: loan.email || \"\",\n        address: loan.address || \"\",\n\n        employment_type: loan.employment_type || \"\",\n        employer_name: loan.employer_name || \"\",\n        monthly_income: Number(loan.monthly_income || 0),\n\n        loan_type: loan.loan_type || \"\",\n        loan_amount: Number(loan.loan_amount || 0),\n        loan_tenure: Number(loan.loan_tenure || 0),\n\n        purpose: loan.purpose || \"\",\n\n        credit_score: Number(loan.credit_score || 0),\n        risk_category: loan.risk_category || \"\",\n        emi: Number(loan.emi || 0),\n\n        status: \"DRAFT\",\n\n        loan_account_number: \"\",\n        remarks: \"\",\n\n        created_date: new Date().toISOString(),\n\n        decision: \"\",\n\n        interest_rate: Number(loan.interest_rate || 0)\n    }\n};\n\nconsole.log(\"===== CREATE DRAFT REQUEST =====\");\nconsole.log(\n    JSON.stringify(bh.local.createRequest, null, 2)\n);",
         "functionName": "prepareCreateDraft",
         "category": "Function",
         "x": 685,
@@ -1625,6 +1652,7 @@
         "nodeType": "flow",
         "name": "",
         "method": "post",
+        "methodMapping": "",
         "methodMappingObj": {},
         "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create\"",
         "urlMappingObj": {
@@ -1632,6 +1660,7 @@
             "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create"
         },
         "ret": "json",
+        "retMapping": "",
         "retMappingObj": {},
         "reqBody": "bh.local.createRequest",
         "reqBodyObj": {
@@ -1652,11 +1681,16 @@
                 "defaultValue": "application/json"
             }
         ],
+        "headerMapping": "",
         "headerMappingObj": {},
         "params": {},
         "paramsObj": [],
+        "paramMapping": "",
         "paramMappingObj": {},
+        "authType": "",
         "useAuthTypeMappingObj": {},
+        "useAuthTypeMap": {},
+        "useAuthType": "",
         "useAuthUsername": "",
         "useAuthUsernameMappingObj": "",
         "useAuthPassword": "",
@@ -1672,6 +1706,7 @@
         "proxy": "",
         "useProxy": false,
         "usetls": false,
+        "cookies": [],
         "cookiesMapObj": {},
         "cookiesList": {},
         "switchStates": {
@@ -1748,6 +1783,7 @@
         "nodeType": "flow",
         "name": "create",
         "method": "post",
+        "methodMapping": "",
         "methodMappingObj": {},
         "urlMapping": "\"https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create\"",
         "urlMappingObj": {
@@ -1755,6 +1791,7 @@
             "mapVarValue": "https://loandb.neutrinos-apps.com/loan-management-db/dm/loan_db/loan_application/create"
         },
         "ret": "json",
+        "retMapping": "",
         "retMappingObj": {},
         "reqBody": "bh.local.requestBody",
         "reqBodyObj": {
@@ -1775,11 +1812,16 @@
                 "defaultValue": "application/json"
             }
         ],
+        "headerMapping": "",
         "headerMappingObj": {},
         "params": {},
         "paramsObj": [],
+        "paramMapping": "",
         "paramMappingObj": {},
+        "authType": "",
         "useAuthTypeMappingObj": {},
+        "useAuthTypeMap": {},
+        "useAuthType": "",
         "useAuthUsername": "",
         "useAuthUsernameMappingObj": "",
         "useAuthPassword": "",
@@ -1795,6 +1837,7 @@
         "proxy": "",
         "useProxy": false,
         "usetls": false,
+        "cookies": [],
         "cookiesMapObj": {},
         "cookiesList": {},
         "switchStates": {

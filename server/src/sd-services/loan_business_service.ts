@@ -431,12 +431,10 @@ export class loan_business_service {
         loan_application: {
           application_id: applicationId,
 
-          // Draft does not have application number yet
-          application_number: '',
-
           customer_name: loan.customer_name || '',
           dob: loan.dob || null,
           gender: loan.gender || '',
+
           mobile: loan.mobile || '',
           email: loan.email || '',
           address: loan.address || '',
@@ -459,6 +457,7 @@ export class loan_business_service {
 
           loan_account_number: '',
           remarks: '',
+
           created_date: new Date().toISOString(),
 
           decision: '',
@@ -492,7 +491,7 @@ export class loan_business_service {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.createRequest,
         paytoqs: false,
@@ -641,7 +640,7 @@ export class loan_business_service {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.updateRequest,
         paytoqs: false,
@@ -692,119 +691,350 @@ export class loan_business_service {
       parentSpanInst
     );
     try {
-      const req = bh.input.body;
+      // const req = bh.input.body;
+
+      // console.log("===== SUBMIT INPUT =====");
+      // console.log(JSON.stringify(req, null, 2));
+
+      // const existingApplicationId = req.application_id;
+
+      // const hasApplicationId =
+      //     existingApplicationId !== undefined &&
+      //     existingApplicationId !== null &&
+      //     existingApplicationId !== "";
+
+      // console.log("Existing application_id:", existingApplicationId);
+      // console.log("hasApplicationId:", hasApplicationId);
+
+      // if (hasApplicationId) {
+
+      //     // =========================
+      //     // UPDATE EXISTING DRAFT
+      //     // =========================
+
+      //     bh.local.submitType = "UPDATE";
+
+      //     bh.local.loanApplication = {
+      //         application_id: req.application_id,
+      //         application_number: req.application_number || "",
+      //         customer_name: req.customer_name || "",
+      //         dob: req.dob || null,
+      //         gender: req.gender || "",
+      //         mobile: req.mobile || "",
+      //         email: req.email || "",
+      //         address: req.address || "",
+      //         employment_type: req.employment_type || "",
+      //         employer_name: req.employer_name || "",
+      //         monthly_income: req.monthly_income || 0,
+      //         loan_type: req.loan_type || "",
+      //         loan_amount: req.loan_amount || 0,
+      //         loan_tenure: req.loan_tenure || 0,
+      //         purpose: req.purpose || "",
+      //         credit_score: req.credit_score || 0,
+      //         risk_category: req.risk_category || "",
+      //         emi: req.emi || 0,
+      //         status: "SUBMITTED",
+      //         loan_account_number: req.loan_account_number || "",
+      //         remarks: req.remarks || "",
+      //         created_date: req.created_date || new Date().toISOString(),
+      //         decision: req.decision || "",
+      //         interest_rate: req.interest_rate || 0
+      //     };
+
+      //     // Generate application number if existing draft doesn't have one
+      //     if (!bh.local.loanApplication.application_number) {
+      //         bh.local.loanApplication.application_number =
+      //             "APP" + Math.floor(10000000 + Math.random() * 90000000);
+      //     }
+
+      // } else {
+
+      //     // =========================
+      //     // DIRECT SUBMIT
+      //     // =========================
+
+      //     bh.local.submitType = "CREATE";
+
+      //     const applicationId =
+      //         "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      //             /[xy]/g,
+      //             function (c) {
+      //                 const r = Math.random() * 16 | 0;
+      //                 const v = c === "x"
+      //                     ? r
+      //                     : (r & 0x3 | 0x8);
+
+      //                 return v.toString(16);
+      //             }
+      //         );
+
+      //     const applicationNumber =
+      //         "APP" + Math.floor(10000000 + Math.random() * 90000000);
+
+      //     bh.local.loanApplication = {
+      //         application_id: applicationId,
+      //         application_number: applicationNumber,
+
+      //         customer_name: req.customer_name || "",
+      //         dob: req.dob || null,
+      //         gender: req.gender || "",
+      //         mobile: req.mobile || "",
+
+      //         email: req.email || "",
+      //         address: req.address || "",
+
+      //         employment_type: req.employment_type || "",
+      //         employer_name: req.employer_name || "",
+      //         monthly_income: req.monthly_income || 0,
+
+      //         loan_type: req.loan_type || "",
+      //         loan_amount: req.loan_amount || 0,
+      //         loan_tenure: req.loan_tenure || 0,
+      //         purpose: req.purpose || "",
+
+      //         credit_score: req.credit_score || 0,
+      //         risk_category: req.risk_category || "",
+      //         emi: req.emi || 0,
+
+      //         status: "SUBMITTED",
+
+      //         loan_account_number: req.loan_account_number || "",
+      //         remarks: req.remarks || "",
+
+      //         created_date: new Date().toISOString(),
+
+      //         decision: req.decision || "",
+      //         interest_rate: req.interest_rate || 0
+      //     };
+      // }
+
+      // console.log("===== SUBMIT TYPE =====");
+      // console.log(bh.local.submitType);
+
+      // console.log("===== SUBMIT APPLICATION =====");
+      // console.log(
+      //     JSON.stringify(bh.local.loanApplication, null, 2)
+      // );
+      const body = bh.input.body;
+
+      /*
+       * The API request structure is:
+       *
+       * {
+       *   "loan_application": {
+       *      ...
+       *   }
+       * }
+       */
+
+      const req = body.loan_application || {};
 
       console.log('===== SUBMIT INPUT =====');
+      console.log(JSON.stringify(body, null, 2));
+
+      console.log('===== LOAN APPLICATION INPUT =====');
       console.log(JSON.stringify(req, null, 2));
+
+      /*
+       * ============================================================
+       * CHECK EXISTING APPLICATION ID
+       * ============================================================
+       */
 
       const existingApplicationId = req.application_id;
 
       const hasApplicationId =
         existingApplicationId !== undefined &&
         existingApplicationId !== null &&
-        existingApplicationId !== '';
+        String(existingApplicationId).trim() !== '';
 
       console.log('Existing application_id:', existingApplicationId);
+
       console.log('hasApplicationId:', hasApplicationId);
 
+      /*
+       * ============================================================
+       * EXISTING DRAFT / APPLICATION
+       * ============================================================
+       */
+
       if (hasApplicationId) {
-        // =========================
-        // UPDATE EXISTING DRAFT
-        // =========================
+        console.log('===== EXISTING APPLICATION =====');
+        console.log('Using existing application_id:', existingApplicationId);
 
         bh.local.submitType = 'UPDATE';
 
         bh.local.loanApplication = {
-          application_id: req.application_id,
+          /*
+           * IMPORTANT:
+           * Do NOT generate a new application_id.
+           */
+          application_id: existingApplicationId,
+
           application_number: req.application_number || '',
+
           customer_name: req.customer_name || '',
+
           dob: req.dob || null,
+
           gender: req.gender || '',
+
           mobile: req.mobile || '',
+
           email: req.email || '',
+
           address: req.address || '',
+
           employment_type: req.employment_type || '',
+
           employer_name: req.employer_name || '',
+
           monthly_income: req.monthly_income || 0,
+
           loan_type: req.loan_type || '',
+
           loan_amount: req.loan_amount || 0,
+
           loan_tenure: req.loan_tenure || 0,
+
           purpose: req.purpose || '',
+
           credit_score: req.credit_score || 0,
+
           risk_category: req.risk_category || '',
+
           emi: req.emi || 0,
+
           status: 'SUBMITTED',
+
           loan_account_number: req.loan_account_number || '',
+
           remarks: req.remarks || '',
+
           created_date: req.created_date || new Date().toISOString(),
+
           decision: req.decision || '',
+
           interest_rate: req.interest_rate || 0,
         };
 
-        // Generate application number if existing draft doesn't have one
+        /*
+         * Generate application number only if missing.
+         *
+         * DO NOT generate application_id.
+         */
         if (!bh.local.loanApplication.application_number) {
           bh.local.loanApplication.application_number =
             'APP' + Math.floor(10000000 + Math.random() * 90000000);
+
+          console.log(
+            'Generated application_number:',
+            bh.local.loanApplication.application_number
+          );
         }
       } else {
-        // =========================
-        // DIRECT SUBMIT
-        // =========================
+        /*
+         * ============================================================
+         * NEW APPLICATION
+         * ============================================================
+         */
+
+        console.log('===== NEW APPLICATION =====');
+        console.log('No application_id found.');
+
+        console.log('Generating new application_id...');
 
         bh.local.submitType = 'CREATE';
 
+        /*
+         * Generate UUID
+         */
         const applicationId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
           /[xy]/g,
           function (c) {
             const r = (Math.random() * 16) | 0;
+
             const v = c === 'x' ? r : (r & 0x3) | 0x8;
 
             return v.toString(16);
           }
         );
 
+        /*
+         * Generate application number
+         */
         const applicationNumber =
           'APP' + Math.floor(10000000 + Math.random() * 90000000);
 
+        console.log('Generated application_id:', applicationId);
+
+        console.log('Generated application_number:', applicationNumber);
+
         bh.local.loanApplication = {
           application_id: applicationId,
+
           application_number: applicationNumber,
 
           customer_name: req.customer_name || '',
+
           dob: req.dob || null,
+
           gender: req.gender || '',
+
           mobile: req.mobile || '',
 
           email: req.email || '',
+
           address: req.address || '',
 
           employment_type: req.employment_type || '',
+
           employer_name: req.employer_name || '',
+
           monthly_income: req.monthly_income || 0,
 
           loan_type: req.loan_type || '',
+
           loan_amount: req.loan_amount || 0,
+
           loan_tenure: req.loan_tenure || 0,
+
           purpose: req.purpose || '',
 
           credit_score: req.credit_score || 0,
+
           risk_category: req.risk_category || '',
+
           emi: req.emi || 0,
 
           status: 'SUBMITTED',
 
           loan_account_number: req.loan_account_number || '',
+
           remarks: req.remarks || '',
 
           created_date: new Date().toISOString(),
 
           decision: req.decision || '',
+
           interest_rate: req.interest_rate || 0,
         };
       }
 
+      /*
+       * ============================================================
+       * FINAL LOGS
+       * ============================================================
+       */
+
       console.log('===== SUBMIT TYPE =====');
       console.log(bh.local.submitType);
+
+      console.log('===== FINAL APPLICATION ID =====');
+      console.log(bh.local.loanApplication.application_id);
+
+      console.log('===== FINAL APPLICATION NUMBER =====');
+      console.log(bh.local.loanApplication.application_number);
 
       console.log('===== SUBMIT APPLICATION =====');
       console.log(JSON.stringify(bh.local.loanApplication, null, 2));
@@ -898,7 +1128,7 @@ export class loan_business_service {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.requestBody,
         paytoqs: false,
@@ -1029,7 +1259,7 @@ export class loan_business_service {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.requestBody,
         paytoqs: false,
@@ -1165,7 +1395,7 @@ export class loan_business_service {
         method: 'post',
         headers: {},
         followRedirects: true,
-        cookies: undefined,
+        cookies: {},
         authType: undefined,
         body: bh.local.requestBody,
         paytoqs: false,
