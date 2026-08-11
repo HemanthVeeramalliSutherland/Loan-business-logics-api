@@ -691,146 +691,483 @@ export class loan_business_service {
       parentSpanInst
     );
     try {
-      // const req = bh.input.body;
+      // // const req = bh.input.body;
+
+      // // console.log("===== SUBMIT INPUT =====");
+      // // console.log(JSON.stringify(req, null, 2));
+
+      // // const existingApplicationId = req.application_id;
+
+      // // const hasApplicationId =
+      // //     existingApplicationId !== undefined &&
+      // //     existingApplicationId !== null &&
+      // //     existingApplicationId !== "";
+
+      // // console.log("Existing application_id:", existingApplicationId);
+      // // console.log("hasApplicationId:", hasApplicationId);
+
+      // // if (hasApplicationId) {
+
+      // //     // =========================
+      // //     // UPDATE EXISTING DRAFT
+      // //     // =========================
+
+      // //     bh.local.submitType = "UPDATE";
+
+      // //     bh.local.loanApplication = {
+      // //         application_id: req.application_id,
+      // //         application_number: req.application_number || "",
+      // //         customer_name: req.customer_name || "",
+      // //         dob: req.dob || null,
+      // //         gender: req.gender || "",
+      // //         mobile: req.mobile || "",
+      // //         email: req.email || "",
+      // //         address: req.address || "",
+      // //         employment_type: req.employment_type || "",
+      // //         employer_name: req.employer_name || "",
+      // //         monthly_income: req.monthly_income || 0,
+      // //         loan_type: req.loan_type || "",
+      // //         loan_amount: req.loan_amount || 0,
+      // //         loan_tenure: req.loan_tenure || 0,
+      // //         purpose: req.purpose || "",
+      // //         credit_score: req.credit_score || 0,
+      // //         risk_category: req.risk_category || "",
+      // //         emi: req.emi || 0,
+      // //         status: "SUBMITTED",
+      // //         loan_account_number: req.loan_account_number || "",
+      // //         remarks: req.remarks || "",
+      // //         created_date: req.created_date || new Date().toISOString(),
+      // //         decision: req.decision || "",
+      // //         interest_rate: req.interest_rate || 0
+      // //     };
+
+      // //     // Generate application number if existing draft doesn't have one
+      // //     if (!bh.local.loanApplication.application_number) {
+      // //         bh.local.loanApplication.application_number =
+      // //             "APP" + Math.floor(10000000 + Math.random() * 90000000);
+      // //     }
+
+      // // } else {
+
+      // //     // =========================
+      // //     // DIRECT SUBMIT
+      // //     // =========================
+
+      // //     bh.local.submitType = "CREATE";
+
+      // //     const applicationId =
+      // //         "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      // //             /[xy]/g,
+      // //             function (c) {
+      // //                 const r = Math.random() * 16 | 0;
+      // //                 const v = c === "x"
+      // //                     ? r
+      // //                     : (r & 0x3 | 0x8);
+
+      // //                 return v.toString(16);
+      // //             }
+      // //         );
+
+      // //     const applicationNumber =
+      // //         "APP" + Math.floor(10000000 + Math.random() * 90000000);
+
+      // //     bh.local.loanApplication = {
+      // //         application_id: applicationId,
+      // //         application_number: applicationNumber,
+
+      // //         customer_name: req.customer_name || "",
+      // //         dob: req.dob || null,
+      // //         gender: req.gender || "",
+      // //         mobile: req.mobile || "",
+
+      // //         email: req.email || "",
+      // //         address: req.address || "",
+
+      // //         employment_type: req.employment_type || "",
+      // //         employer_name: req.employer_name || "",
+      // //         monthly_income: req.monthly_income || 0,
+
+      // //         loan_type: req.loan_type || "",
+      // //         loan_amount: req.loan_amount || 0,
+      // //         loan_tenure: req.loan_tenure || 0,
+      // //         purpose: req.purpose || "",
+
+      // //         credit_score: req.credit_score || 0,
+      // //         risk_category: req.risk_category || "",
+      // //         emi: req.emi || 0,
+
+      // //         status: "SUBMITTED",
+
+      // //         loan_account_number: req.loan_account_number || "",
+      // //         remarks: req.remarks || "",
+
+      // //         created_date: new Date().toISOString(),
+
+      // //         decision: req.decision || "",
+      // //         interest_rate: req.interest_rate || 0
+      // //     };
+      // // }
+
+      // // console.log("===== SUBMIT TYPE =====");
+      // // console.log(bh.local.submitType);
+
+      // // console.log("===== SUBMIT APPLICATION =====");
+      // // console.log(
+      // //     JSON.stringify(bh.local.loanApplication, null, 2)
+      // // );
+      // const body = bh.input.body;
+
+      // /*
+      //  * The API request structure is:
+      //  *
+      //  * {
+      //  *   "loan_application": {
+      //  *      ...
+      //  *   }
+      //  * }
+      //  */
+
+      // const req = body.loan_application || {};
 
       // console.log("===== SUBMIT INPUT =====");
+      // console.log(JSON.stringify(body, null, 2));
+
+      // console.log("===== LOAN APPLICATION INPUT =====");
       // console.log(JSON.stringify(req, null, 2));
+
+      // /*
+      //  * ============================================================
+      //  * CHECK EXISTING APPLICATION ID
+      //  * ============================================================
+      //  */
 
       // const existingApplicationId = req.application_id;
 
       // const hasApplicationId =
       //     existingApplicationId !== undefined &&
       //     existingApplicationId !== null &&
-      //     existingApplicationId !== "";
+      //     String(existingApplicationId).trim() !== "";
 
-      // console.log("Existing application_id:", existingApplicationId);
-      // console.log("hasApplicationId:", hasApplicationId);
+      // console.log(
+      //     "Existing application_id:",
+      //     existingApplicationId
+      // );
+
+      // console.log(
+      //     "hasApplicationId:",
+      //     hasApplicationId
+      // );
+
+      // /*
+      //  * ============================================================
+      //  * EXISTING DRAFT / APPLICATION
+      //  * ============================================================
+      //  */
 
       // if (hasApplicationId) {
 
-      //     // =========================
-      //     // UPDATE EXISTING DRAFT
-      //     // =========================
+      //     console.log("===== EXISTING APPLICATION =====");
+      //     console.log(
+      //         "Using existing application_id:",
+      //         existingApplicationId
+      //     );
 
       //     bh.local.submitType = "UPDATE";
 
       //     bh.local.loanApplication = {
-      //         application_id: req.application_id,
-      //         application_number: req.application_number || "",
-      //         customer_name: req.customer_name || "",
-      //         dob: req.dob || null,
-      //         gender: req.gender || "",
-      //         mobile: req.mobile || "",
-      //         email: req.email || "",
-      //         address: req.address || "",
-      //         employment_type: req.employment_type || "",
-      //         employer_name: req.employer_name || "",
-      //         monthly_income: req.monthly_income || 0,
-      //         loan_type: req.loan_type || "",
-      //         loan_amount: req.loan_amount || 0,
-      //         loan_tenure: req.loan_tenure || 0,
-      //         purpose: req.purpose || "",
-      //         credit_score: req.credit_score || 0,
-      //         risk_category: req.risk_category || "",
-      //         emi: req.emi || 0,
-      //         status: "SUBMITTED",
-      //         loan_account_number: req.loan_account_number || "",
-      //         remarks: req.remarks || "",
-      //         created_date: req.created_date || new Date().toISOString(),
-      //         decision: req.decision || "",
-      //         interest_rate: req.interest_rate || 0
+
+      //         /*
+      //          * IMPORTANT:
+      //          * Do NOT generate a new application_id.
+      //          */
+      //         application_id: existingApplicationId,
+
+      //         application_number:
+      //             req.application_number || "",
+
+      //         customer_name:
+      //             req.customer_name || "",
+
+      //         dob:
+      //             req.dob || null,
+
+      //         gender:
+      //             req.gender || "",
+
+      //         mobile:
+      //             req.mobile || "",
+
+      //         email:
+      //             req.email || "",
+
+      //         address:
+      //             req.address || "",
+
+      //         employment_type:
+      //             req.employment_type || "",
+
+      //         employer_name:
+      //             req.employer_name || "",
+
+      //         monthly_income:
+      //             req.monthly_income || 0,
+
+      //         loan_type:
+      //             req.loan_type || "",
+
+      //         loan_amount:
+      //             req.loan_amount || 0,
+
+      //         loan_tenure:
+      //             req.loan_tenure || 0,
+
+      //         purpose:
+      //             req.purpose || "",
+
+      //         credit_score:
+      //             req.credit_score || 0,
+
+      //         risk_category:
+      //             req.risk_category || "",
+
+      //         emi:
+      //             req.emi || 0,
+
+      //         status:
+      //             "SUBMITTED",
+
+      //         loan_account_number:
+      //             req.loan_account_number || "",
+
+      //         remarks:
+      //             req.remarks || "",
+
+      //         created_date:
+      //             req.created_date ||
+      //             new Date().toISOString(),
+
+      //         decision:
+      //             req.decision || "",
+
+      //         interest_rate:
+      //             req.interest_rate || 0
       //     };
 
-      //     // Generate application number if existing draft doesn't have one
+      //     /*
+      //      * Generate application number only if missing.
+      //      *
+      //      * DO NOT generate application_id.
+      //      */
       //     if (!bh.local.loanApplication.application_number) {
+
       //         bh.local.loanApplication.application_number =
-      //             "APP" + Math.floor(10000000 + Math.random() * 90000000);
+      //             "APP" +
+      //             Math.floor(
+      //                 10000000 +
+      //                 Math.random() * 90000000
+      //             );
+
+      //         console.log(
+      //             "Generated application_number:",
+      //             bh.local.loanApplication.application_number
+      //         );
       //     }
 
       // } else {
 
-      //     // =========================
-      //     // DIRECT SUBMIT
-      //     // =========================
+      //     /*
+      //      * ============================================================
+      //      * NEW APPLICATION
+      //      * ============================================================
+      //      */
+
+      //     console.log("===== NEW APPLICATION =====");
+      //     console.log(
+      //         "No application_id found."
+      //     );
+
+      //     console.log(
+      //         "Generating new application_id..."
+      //     );
 
       //     bh.local.submitType = "CREATE";
 
+      //     /*
+      //      * Generate UUID
+      //      */
       //     const applicationId =
       //         "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
       //             /[xy]/g,
       //             function (c) {
-      //                 const r = Math.random() * 16 | 0;
-      //                 const v = c === "x"
-      //                     ? r
-      //                     : (r & 0x3 | 0x8);
+
+      //                 const r =
+      //                     Math.random() * 16 | 0;
+
+      //                 const v =
+      //                     c === "x"
+      //                         ? r
+      //                         : (r & 0x3 | 0x8);
 
       //                 return v.toString(16);
       //             }
       //         );
 
+      //     /*
+      //      * Generate application number
+      //      */
       //     const applicationNumber =
-      //         "APP" + Math.floor(10000000 + Math.random() * 90000000);
+      //         "APP" +
+      //         Math.floor(
+      //             10000000 +
+      //             Math.random() * 90000000
+      //         );
+
+      //     console.log(
+      //         "Generated application_id:",
+      //         applicationId
+      //     );
+
+      //     console.log(
+      //         "Generated application_number:",
+      //         applicationNumber
+      //     );
 
       //     bh.local.loanApplication = {
-      //         application_id: applicationId,
-      //         application_number: applicationNumber,
 
-      //         customer_name: req.customer_name || "",
-      //         dob: req.dob || null,
-      //         gender: req.gender || "",
-      //         mobile: req.mobile || "",
+      //         application_id:
+      //             applicationId,
 
-      //         email: req.email || "",
-      //         address: req.address || "",
+      //         application_number:
+      //             applicationNumber,
 
-      //         employment_type: req.employment_type || "",
-      //         employer_name: req.employer_name || "",
-      //         monthly_income: req.monthly_income || 0,
+      //         customer_name:
+      //             req.customer_name || "",
 
-      //         loan_type: req.loan_type || "",
-      //         loan_amount: req.loan_amount || 0,
-      //         loan_tenure: req.loan_tenure || 0,
-      //         purpose: req.purpose || "",
+      //         dob:
+      //             req.dob || null,
 
-      //         credit_score: req.credit_score || 0,
-      //         risk_category: req.risk_category || "",
-      //         emi: req.emi || 0,
+      //         gender:
+      //             req.gender || "",
 
-      //         status: "SUBMITTED",
+      //         mobile:
+      //             req.mobile || "",
 
-      //         loan_account_number: req.loan_account_number || "",
-      //         remarks: req.remarks || "",
+      //         email:
+      //             req.email || "",
 
-      //         created_date: new Date().toISOString(),
+      //         address:
+      //             req.address || "",
 
-      //         decision: req.decision || "",
-      //         interest_rate: req.interest_rate || 0
+      //         employment_type:
+      //             req.employment_type || "",
+
+      //         employer_name:
+      //             req.employer_name || "",
+
+      //         monthly_income:
+      //             req.monthly_income || 0,
+
+      //         loan_type:
+      //             req.loan_type || "",
+
+      //         loan_amount:
+      //             req.loan_amount || 0,
+
+      //         loan_tenure:
+      //             req.loan_tenure || 0,
+
+      //         purpose:
+      //             req.purpose || "",
+
+      //         credit_score:
+      //             req.credit_score || 0,
+
+      //         risk_category:
+      //             req.risk_category || "",
+
+      //         emi:
+      //             req.emi || 0,
+
+      //         status:
+      //             "SUBMITTED",
+
+      //         loan_account_number:
+      //             req.loan_account_number || "",
+
+      //         remarks:
+      //             req.remarks || "",
+
+      //         created_date:
+      //             new Date().toISOString(),
+
+      //         decision:
+      //             req.decision || "",
+
+      //         interest_rate:
+      //             req.interest_rate || 0
       //     };
       // }
 
+      // /*
+      //  * ============================================================
+      //  * FINAL LOGS
+      //  * ============================================================
+      //  */
+
       // console.log("===== SUBMIT TYPE =====");
-      // console.log(bh.local.submitType);
+      // console.log(
+      //     bh.local.submitType
+      // );
+
+      // console.log("===== FINAL APPLICATION ID =====");
+      // console.log(
+      //     bh.local.loanApplication.application_id
+      // );
+
+      // console.log("===== FINAL APPLICATION NUMBER =====");
+      // console.log(
+      //     bh.local.loanApplication.application_number
+      // );
 
       // console.log("===== SUBMIT APPLICATION =====");
       // console.log(
-      //     JSON.stringify(bh.local.loanApplication, null, 2)
+      //     JSON.stringify(
+      //         bh.local.loanApplication,
+      //         null,
+      //         2
+      //     )
       // );
-      const body = bh.input.body;
 
-      /*
-       * The API request structure is:
-       *
-       * {
-       *   "loan_application": {
-       *      ...
-       *   }
-       * }
-       */
-
-      const req = body.loan_application || {};
+      const body = bh.input.body || {};
 
       console.log('===== SUBMIT INPUT =====');
       console.log(JSON.stringify(body, null, 2));
+
+      /*
+       * ============================================================
+       * UI PAYLOAD
+       * ============================================================
+       *
+       * The UI sends the loan application directly:
+       *
+       * {
+       *   customer_name: "...",
+       *   dob: "...",
+       *   monthly_income: 21000,
+       *   loan_amount: 90890,
+       *   ...
+       * }
+       *
+       * Therefore:
+       *
+       * req = body
+       *
+       * NOT:
+       *
+       * body.loan_application
+       */
+
+      const req = body;
 
       console.log('===== LOAN APPLICATION INPUT =====');
       console.log(JSON.stringify(req, null, 2));
@@ -854,21 +1191,23 @@ export class loan_business_service {
 
       /*
        * ============================================================
-       * EXISTING DRAFT / APPLICATION
+       * EXISTING APPLICATION / DRAFT
        * ============================================================
        */
 
       if (hasApplicationId) {
         console.log('===== EXISTING APPLICATION =====');
+
         console.log('Using existing application_id:', existingApplicationId);
 
         bh.local.submitType = 'UPDATE';
 
+        /*
+         * IMPORTANT:
+         * Preserve existing application_id.
+         */
+
         bh.local.loanApplication = {
-          /*
-           * IMPORTANT:
-           * Do NOT generate a new application_id.
-           */
           application_id: existingApplicationId,
 
           application_number: req.application_number || '',
@@ -889,21 +1228,23 @@ export class loan_business_service {
 
           employer_name: req.employer_name || '',
 
-          monthly_income: req.monthly_income || 0,
+          monthly_income: Number(req.monthly_income || 0),
 
           loan_type: req.loan_type || '',
 
-          loan_amount: req.loan_amount || 0,
+          loan_amount: Number(req.loan_amount || 0),
 
-          loan_tenure: req.loan_tenure || 0,
+          loan_tenure: Number(req.loan_tenure || 0),
 
           purpose: req.purpose || '',
 
-          credit_score: req.credit_score || 0,
+          credit_score: Number(req.credit_score || 0),
 
           risk_category: req.risk_category || '',
 
-          emi: req.emi || 0,
+          risk_score: Number(req.risk_score || 0),
+
+          emi: Number(req.emi || 0),
 
           status: 'SUBMITTED',
 
@@ -915,14 +1256,13 @@ export class loan_business_service {
 
           decision: req.decision || '',
 
-          interest_rate: req.interest_rate || 0,
+          interest_rate: Number(req.interest_rate || 0),
         };
 
         /*
          * Generate application number only if missing.
-         *
-         * DO NOT generate application_id.
          */
+
         if (!bh.local.loanApplication.application_number) {
           bh.local.loanApplication.application_number =
             'APP' + Math.floor(10000000 + Math.random() * 90000000);
@@ -934,12 +1274,13 @@ export class loan_business_service {
         }
       } else {
         /*
-         * ============================================================
+         * ========================================================
          * NEW APPLICATION
-         * ============================================================
+         * ========================================================
          */
 
         console.log('===== NEW APPLICATION =====');
+
         console.log('No application_id found.');
 
         console.log('Generating new application_id...');
@@ -949,6 +1290,7 @@ export class loan_business_service {
         /*
          * Generate UUID
          */
+
         const applicationId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
           /[xy]/g,
           function (c) {
@@ -963,12 +1305,19 @@ export class loan_business_service {
         /*
          * Generate application number
          */
+
         const applicationNumber =
           'APP' + Math.floor(10000000 + Math.random() * 90000000);
 
         console.log('Generated application_id:', applicationId);
 
         console.log('Generated application_number:', applicationNumber);
+
+        /*
+         * ========================================================
+         * BUILD LOAN APPLICATION
+         * ========================================================
+         */
 
         bh.local.loanApplication = {
           application_id: applicationId,
@@ -991,21 +1340,23 @@ export class loan_business_service {
 
           employer_name: req.employer_name || '',
 
-          monthly_income: req.monthly_income || 0,
+          monthly_income: Number(req.monthly_income || 0),
 
           loan_type: req.loan_type || '',
 
-          loan_amount: req.loan_amount || 0,
+          loan_amount: Number(req.loan_amount || 0),
 
-          loan_tenure: req.loan_tenure || 0,
+          loan_tenure: Number(req.loan_tenure || 0),
 
           purpose: req.purpose || '',
 
-          credit_score: req.credit_score || 0,
+          credit_score: Number(req.credit_score || 0),
 
           risk_category: req.risk_category || '',
 
-          emi: req.emi || 0,
+          risk_score: Number(req.risk_score || 0),
+
+          emi: Number(req.emi || 0),
 
           status: 'SUBMITTED',
 
@@ -1017,7 +1368,7 @@ export class loan_business_service {
 
           decision: req.decision || '',
 
-          interest_rate: req.interest_rate || 0,
+          interest_rate: Number(req.interest_rate || 0),
         };
       }
 
@@ -1028,18 +1379,22 @@ export class loan_business_service {
        */
 
       console.log('===== SUBMIT TYPE =====');
+
       console.log(bh.local.submitType);
 
       console.log('===== FINAL APPLICATION ID =====');
+
       console.log(bh.local.loanApplication.application_id);
 
       console.log('===== FINAL APPLICATION NUMBER =====');
+
       console.log(bh.local.loanApplication.application_number);
 
       console.log('===== SUBMIT APPLICATION =====');
+
       console.log(JSON.stringify(bh.local.loanApplication, null, 2));
       this.tracerService.sendData(spanInst, bh);
-      bh = await this.sd_woLlOtrkQMZJ7qC1(bh, parentSpanInst);
+      bh = await this.prepareReelsRequest(bh, parentSpanInst);
       //appendnew_next_sd_kO8gj7QgAnW5sg73
       return bh;
     } catch (e) {
@@ -1049,6 +1404,529 @@ export class loan_business_service {
         'sd_kO8gj7QgAnW5sg73',
         spanInst,
         'sd_kO8gj7QgAnW5sg73'
+      );
+    }
+  }
+
+  async prepareReelsRequest(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'prepareReelsRequest',
+      parentSpanInst
+    );
+    try {
+      const loan = bh.local.loanApplication || {};
+
+      console.log('===== PREPARE REELS REQUEST =====');
+      console.log(JSON.stringify(loan, null, 2));
+
+      // ======================================================
+      // REELS CONFIGURATION
+      // ======================================================
+
+      const BASE_URL = bh.system.environment.REELS_BASE_URL;
+
+      const TOKEN = bh.system.environment.REELS_TOKEN;
+
+      const WORKFLOW_ID = '9d2789ac-d922-443c-8cb8-250aac8a5cd7';
+
+      const VERSION = '1.0.0';
+
+      // ======================================================
+      // VALIDATE REELS CONFIGURATION
+      // ======================================================
+
+      if (!BASE_URL) {
+        throw new Error('REELS_BASE_URL is not configured');
+      }
+
+      if (!TOKEN) {
+        throw new Error('REELS_TOKEN is not configured');
+      }
+
+      // ======================================================
+      // CALCULATE AGE
+      // ======================================================
+
+      let age = 0;
+
+      if (loan.dob) {
+        const dob = new Date(loan.dob);
+
+        const today = new Date();
+
+        age = today.getFullYear() - dob.getFullYear();
+
+        const monthDifference = today.getMonth() - dob.getMonth();
+
+        if (
+          monthDifference < 0 ||
+          (monthDifference === 0 && today.getDate() < dob.getDate())
+        ) {
+          age--;
+        }
+      }
+
+      console.log('Calculated age:', age);
+
+      // ======================================================
+      // CALCULATE CREDIT SCORE
+      //
+      // Reels expects:
+      //
+      // credit_score =
+      // loan_amount / (monthly_income * 12)
+      //
+      // Example:
+      //
+      // 5200000 / (500000 * 12)
+      // = 0.8667
+      // ======================================================
+
+      let calculatedCreditScore = 0;
+
+      const monthlyIncome = Number(loan.monthly_income || 0);
+
+      const loanAmount = Number(loan.loan_amount || 0);
+
+      if (monthlyIncome > 0 && loanAmount > 0) {
+        calculatedCreditScore = loanAmount / (monthlyIncome * 12);
+      }
+
+      calculatedCreditScore = Number(calculatedCreditScore.toFixed(4));
+
+      console.log('Calculated credit score:', calculatedCreditScore);
+
+      // ======================================================
+      // STORE CALCULATED CREDIT SCORE
+      // ======================================================
+
+      loan.credit_score = calculatedCreditScore;
+
+      bh.local.loanApplication = loan;
+
+      console.log(
+        'Stored credit_score in loanApplication:',
+        bh.local.loanApplication.credit_score
+      );
+
+      // ======================================================
+      // REELS URL
+      // ======================================================
+
+      bh.local.reelsUrl = `${BASE_URL}/runtime/sync`;
+
+      // ======================================================
+      // REELS HEADERS
+      // ======================================================
+
+      bh.local.reelsHeaders = {
+        'Content-Type': 'application/json',
+
+        token: TOKEN,
+      };
+
+      console.log('===== REELS HEADERS CONFIGURED =====');
+
+      console.log('Content-Type:', bh.local.reelsHeaders['Content-Type']);
+
+      console.log('Token configured:', !!bh.local.reelsHeaders['token']);
+
+      // ======================================================
+      // REELS INPUT
+      //
+      // Only send the fields required by the Reels workflow.
+      //
+      // Reels calculates:
+      //
+      // - risk_score
+      // - InterestRate
+      // - emi
+      // - total_payment
+      // - total_interest
+      // - final_decision
+      // - isAgeValid
+      // - isCreditScoreValid
+      // etc.
+      // ======================================================
+
+      bh.local.reelsInput = {
+        age: age,
+
+        monthly_income: monthlyIncome,
+
+        credit_score: calculatedCreditScore,
+
+        loan_amount: loanAmount,
+
+        loan_tenure: Number(loan.loan_tenure || 0),
+
+        interest_rate: 0,
+
+        isAgeValid: false,
+
+        message: '',
+
+        emi: 0,
+
+        total_payment: 0,
+
+        total_interest: 0,
+
+        credit_status: '',
+
+        loan_status: '',
+
+        loan_type: loan.loan_type || '',
+
+        final_decision: '',
+
+        risk_score: 0,
+      };
+
+      // ======================================================
+      // COMPLETE REELS REQUEST
+      // ======================================================
+
+      bh.local.reelsRequest = {
+        workflowId: WORKFLOW_ID,
+
+        version: VERSION,
+
+        inputObj: bh.local.reelsInput,
+
+        subFlowIDs: [],
+      };
+
+      // ======================================================
+      // LOGGING
+      // ======================================================
+
+      console.log('===== REELS URL =====');
+
+      console.log(bh.local.reelsUrl);
+
+      console.log('===== REELS TOKEN CONFIGURED =====');
+
+      console.log(!!TOKEN);
+
+      console.log('===== REELS INPUT =====');
+
+      console.log(JSON.stringify(bh.local.reelsInput, null, 2));
+
+      console.log('===== REELS REQUEST =====');
+
+      console.log(JSON.stringify(bh.local.reelsRequest, null, 2));
+
+      console.log('===== REELS HEADERS =====');
+
+      console.log(
+        JSON.stringify(
+          {
+            'Content-Type': bh.local.reelsHeaders['Content-Type'],
+            tokenConfigured: !!bh.local.reelsHeaders['token'],
+          },
+          null,
+          2
+        )
+      );
+      this.tracerService.sendData(spanInst, bh);
+      bh = await this.sd_ALTtVvwlnnzpXvI9(bh, parentSpanInst);
+      //appendnew_next_prepareReelsRequest
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_OvNbA9FyzbORsLSf',
+        spanInst,
+        'prepareReelsRequest'
+      );
+    }
+  }
+
+  async sd_ALTtVvwlnnzpXvI9(bh, parentSpanInst) {
+    try {
+      let requestOptions: any = {
+        url: bh.local.reelsUrl,
+        timeout: 30000,
+        method: 'post',
+        headers: bh.local.reelsHeaders,
+        followRedirects: true,
+        cookies: {},
+        authType: undefined,
+        body: bh.local.reelsRequest,
+        paytoqs: false,
+        proxyConfig: undefined,
+        tlsConfig: undefined,
+        ret: 'json',
+        params: {},
+        username: undefined,
+        password: undefined,
+        token: undefined,
+        useQuerystring: false,
+      };
+      requestOptions.rejectUnauthorized = false;
+      requestOptions.tlsConfig = undefined;
+      requestOptions.proxyConfig = undefined;
+      let responseMsg: any = await this.sdService.httpRequest(
+        requestOptions.url,
+        requestOptions.timeout,
+        requestOptions.method,
+        requestOptions.headers,
+        requestOptions.followRedirects,
+        requestOptions.cookies,
+        requestOptions.authType,
+        requestOptions.body,
+        requestOptions.paytoqs,
+        requestOptions.proxyConfig,
+        requestOptions.tlsConfig,
+        requestOptions.ret,
+        requestOptions.params,
+        requestOptions.rejectUnauthorized,
+        requestOptions.username,
+        requestOptions.password,
+        requestOptions.token
+      );
+
+      bh.local.reelsResponse = responseMsg;
+      bh = await this.processReelsResponse(bh, parentSpanInst);
+      //appendnew_next_sd_ALTtVvwlnnzpXvI9
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(bh, e, 'sd_ALTtVvwlnnzpXvI9');
+    }
+  }
+
+  async processReelsResponse(bh, parentSpanInst) {
+    const spanInst = this.tracerService.createSpan(
+      'processReelsResponse',
+      parentSpanInst
+    );
+    try {
+      console.log('===== PROCESS REELS RESPONSE =====');
+
+      console.log(JSON.stringify(bh.local.reelsResponse, null, 2));
+
+      // ======================================================
+      // VALIDATE REELS RESPONSE
+      // ======================================================
+
+      if (!bh.local.reelsResponse) {
+        throw new Error('Reels API did not return a response');
+      }
+
+      const reelsResponse = bh.local.reelsResponse;
+
+      // ======================================================
+      // IMPORTANT:
+      // Reels response structure is:
+      //
+      // reelsResponse
+      //      ↓
+      // payload
+      //      ↓
+      // result
+      // ======================================================
+
+      if (!reelsResponse.payload) {
+        throw new Error('Reels payload not found in response');
+      }
+
+      const reelsResult = reelsResponse.payload.result;
+
+      if (!reelsResult) {
+        throw new Error('Reels result not found in payload');
+      }
+
+      console.log('===== REELS RESULT =====');
+
+      console.log(JSON.stringify(reelsResult, null, 2));
+
+      // ======================================================
+      // EXISTING LOAN APPLICATION
+      // ======================================================
+
+      const loanApplication = bh.local.loanApplication;
+
+      if (!loanApplication) {
+        throw new Error('Loan application not found');
+      }
+
+      // ======================================================
+      // PRESERVE APPLICATION ID
+      // ======================================================
+
+      if (!loanApplication.application_id) {
+        throw new Error('application_id is missing');
+      }
+
+      console.log('Existing application_id:', loanApplication.application_id);
+
+      // ======================================================
+      // MAP REELS CREDIT SCORE → DB
+      // ======================================================
+
+      if (
+        reelsResult.credit_score !== undefined &&
+        reelsResult.credit_score !== null &&
+        reelsResult.credit_score !== ''
+      ) {
+        loanApplication.credit_score = Number(reelsResult.credit_score);
+
+        console.log('Mapped credit_score:', loanApplication.credit_score);
+      }
+
+      // ======================================================
+      // MAP REELS RISK SCORE → DB
+      // ======================================================
+
+      if (
+        reelsResult.risk_score !== undefined &&
+        reelsResult.risk_score !== null &&
+        reelsResult.risk_score !== ''
+      ) {
+        loanApplication.risk_score = Number(reelsResult.risk_score);
+
+        console.log('Mapped risk_score:', loanApplication.risk_score);
+      }
+
+      // ======================================================
+      // MAP INTEREST RATE → DB
+      //
+      // Reels:
+      // InterestRate
+      //
+      // DB:
+      // interest_rate
+      // ======================================================
+
+      if (
+        reelsResult.InterestRate !== undefined &&
+        reelsResult.InterestRate !== null &&
+        reelsResult.InterestRate !== ''
+      ) {
+        loanApplication.interest_rate = Number(reelsResult.InterestRate);
+
+        console.log('Mapped interest_rate:', loanApplication.interest_rate);
+      }
+
+      // ======================================================
+      // MAP EMI → DB
+      // ======================================================
+
+      if (
+        reelsResult.emi !== undefined &&
+        reelsResult.emi !== null &&
+        reelsResult.emi !== ''
+      ) {
+        loanApplication.emi = Number(reelsResult.emi);
+
+        console.log('Mapped emi:', loanApplication.emi);
+      }
+
+      // ======================================================
+      // MAP FINAL DECISION → DB
+      //
+      // Reels:
+      // APPROVED / REJECTED
+      //
+      // DB:
+      // decision
+      // ======================================================
+
+      if (
+        reelsResult.final_decision !== undefined &&
+        reelsResult.final_decision !== null &&
+        reelsResult.final_decision !== ''
+      ) {
+        loanApplication.decision = String(reelsResult.final_decision);
+
+        console.log('Mapped decision:', loanApplication.decision);
+      }
+
+      // ======================================================
+      // MAP MESSAGE → REMARKS
+      // ======================================================
+
+      if (
+        reelsResult.message !== undefined &&
+        reelsResult.message !== null &&
+        reelsResult.message !== ''
+      ) {
+        loanApplication.remarks = String(reelsResult.message);
+
+        console.log('Mapped remarks:', loanApplication.remarks);
+      }
+
+      // ======================================================
+      // MAP RISK CATEGORY
+      //
+      // Only if Reels provides it.
+      // ======================================================
+
+      if (
+        reelsResult.risk_category !== undefined &&
+        reelsResult.risk_category !== null &&
+        reelsResult.risk_category !== ''
+      ) {
+        loanApplication.risk_category = String(reelsResult.risk_category);
+
+        console.log('Mapped risk_category:', loanApplication.risk_category);
+      }
+
+      // ======================================================
+      // LOAN STATUS
+      //
+      // Reels response currently does NOT provide
+      // loan_status, so keep SUBMITTED.
+      // ======================================================
+
+      if (
+        reelsResult.loan_status !== undefined &&
+        reelsResult.loan_status !== null &&
+        reelsResult.loan_status !== ''
+      ) {
+        loanApplication.status = String(reelsResult.loan_status);
+      } else {
+        loanApplication.status = 'SUBMITTED';
+      }
+
+      // ======================================================
+      // STORE COMPLETE REELS RESULT
+      // ======================================================
+
+      bh.local.reelsResult = reelsResult;
+
+      // ======================================================
+      // PREPARE DB REQUEST
+      // ======================================================
+
+      bh.local.requestBody = {
+        loan_application: loanApplication,
+      };
+
+      // ======================================================
+      // FINAL LOGS
+      // ======================================================
+
+      console.log('===== FINAL LOAN APPLICATION AFTER REELS =====');
+
+      console.log(JSON.stringify(loanApplication, null, 2));
+
+      console.log('===== DB UPDATE REQUEST =====');
+
+      console.log(JSON.stringify(bh.local.requestBody, null, 2));
+      this.tracerService.sendData(spanInst, bh);
+      bh = await this.sd_woLlOtrkQMZJ7qC1(bh, parentSpanInst);
+      //appendnew_next_processReelsResponse
+      return bh;
+    } catch (e) {
+      return await this.errorHandler(
+        bh,
+        e,
+        'sd_hGz0GKFOv0nNDdaD',
+        spanInst,
+        'processReelsResponse'
       );
     }
   }
@@ -1179,15 +2057,49 @@ export class loan_business_service {
       parentSpanInst
     );
     try {
+      // console.log("===== SUBMIT SUCCESS =====");
+
+      // bh.local.output = {
+      //     success: true,
+      //     message: "Loan submitted successfully.",
+      //     application_id: bh.local.loanApplication.application_id,
+      //     application_number:
+      //         bh.local.loanApplication.application_number,
+      //     status: "SUBMITTED",
+      //     data: bh.local.loanApplication
+      // };
+
+      // console.log(
+      //     JSON.stringify(bh.local.output, null, 2)
+      // );
       console.log('===== SUBMIT SUCCESS =====');
+
+      const loan = bh.local.loanApplication || {};
+
+      const decision = loan.decision || '';
+
+      let message = 'Loan submitted successfully.';
+
+      if (decision === 'APPROVED') {
+        message = 'Loan approved successfully.';
+      } else if (decision === 'REJECTED') {
+        message = 'Loan application rejected.';
+      }
 
       bh.local.output = {
         success: true,
-        message: 'Loan submitted successfully.',
-        application_id: bh.local.loanApplication.application_id,
-        application_number: bh.local.loanApplication.application_number,
-        status: 'SUBMITTED',
-        data: bh.local.loanApplication,
+
+        message: message,
+
+        application_id: loan.application_id,
+
+        application_number: loan.application_number,
+
+        status: loan.status || 'SUBMITTED',
+
+        decision: decision,
+
+        data: loan,
       };
 
       console.log(JSON.stringify(bh.local.output, null, 2));
