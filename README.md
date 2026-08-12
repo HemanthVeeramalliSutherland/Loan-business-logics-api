@@ -320,3 +320,60 @@ The application can be demonstrated using:
 8. Loan Disbursement
 9. Loan Account Number generation
 10. Final status
+
+
+
+High-Level LLD
+┌─────────────────────────────┐
+│         ALPHA UI            │
+│                             │
+│ Loan Application Form       │
+│ Save Draft                  │
+│ Submit                      │
+│ Application Status          │
+└──────────────┬──────────────┘
+               │ REST
+               ▼
+┌─────────────────────────────┐
+│          SSD APIs           │
+│                             │
+│ Save Draft                  │
+│ Submit Loan                 │
+│ Update Loan                 │
+│ Get Loan                    │
+│ Loan Officer Review         │
+│ Generate Policy             │
+└───────┬───────────┬─────────┘
+        │           │
+        │           │
+        ▼           ▼
+┌──────────────┐  ┌──────────────┐
+│ PostgreSQL   │  │    REELS     │
+│              │  │              │
+│ Applications │  │ Risk Score   │
+│ History      │  │ Eligibility  │
+│ Status       │  │ Interest     │
+└──────────────┘  └──────┬───────┘
+                         │
+                         ▼
+                  ┌──────────────┐
+                  │     BPM      │
+                  │              │
+                  │ Validation   │
+                  │ Loan Officer │
+                  │ Credit Mgr   │
+                  │ Disbursement │
+                  └──────┬───────┘
+                         │
+                         ▼
+                  ┌──────────────┐
+                  │ Case Manager │
+                  │              │
+                  │ Case Status  │
+                  │ Task Status  │
+                  └──────────────┘
+
+
+
+
+
